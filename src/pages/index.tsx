@@ -7,9 +7,11 @@ import Sidebar from "./components/sidebar";
 const Index = () => {
   return (
     <GlobalStorage>
-      <Header />
-      <Sidebar />
-      <Footer />
+      <section className="bg-black w-full h-full text-white font-serif">
+        <Header />
+        <Sidebar />
+        <Footer />
+      </section>
     </GlobalStorage>
   );
 };
