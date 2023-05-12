@@ -7,7 +7,7 @@ import Sidebar from "./components/sidebar";
 const Index = () => {
   return (
     <GlobalStorage>
-      <section className="bg-black w-full h-full text-white font-serif">
+      <section className="  w-full h-screen text-black-100 font-serif dark:bg-dark-500 flex flex-col">
         <Header />
         <Sidebar />
         <Footer />

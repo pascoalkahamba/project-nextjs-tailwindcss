@@ -7,7 +7,7 @@ const Sidebar = () => {
   } = useGlobalContext();
 
   return (
-    <section>
+    <section className="flex-1">
       Hello people my name is {name} and I am {age} year old
     </section>
   );
