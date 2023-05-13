@@ -1,8 +1,6 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 import "../styles/global.css";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 import { ThemeProvider } from "next-themes";
 
 export default function App(props: AppProps) {
