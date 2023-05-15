@@ -17,11 +17,7 @@ const Header = () => {
         alt="picture from the project"
         className="block"
       />
-      <Link
-        href="https://www.github.com/pascoalkahamba"
-        target="_blank"
-        className="block"
-      >
+      <Link href="./components/login" target="_blank" className="block">
         my profile
       </Link>
       {currentTheme === "dark" ? (
