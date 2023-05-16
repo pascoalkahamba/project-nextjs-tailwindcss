@@ -2,14 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { useTheme } from "next-themes";
+import { LogIn, LogInIcon, LogOutIcon } from "lucide-react";
 
 const Header = () => {
   const { systemTheme, theme, setTheme } = useTheme();
 
   const currentTheme = theme === "system" ? systemTheme : theme;
+  const username = "pascoal Kahamba";
 
   return (
-    <header className="w-full h-[70px] text-white bg-slate-900 dark:bg-slate-600 p-1 fixed z-[1000] flex justify-between items-center">
+    <header className="w-full h-[60px] text-white bg-slate-900 dark:bg-slate-600 p-1 fixed z-[1000] flex justify-between items-center">
       <Link href="/">
         <a className="block">
           <Image
@@ -21,9 +23,13 @@ const Header = () => {
           />
         </a>
       </Link>
-      <Link href="./login" target="_blank" className="block">
-        my profile
-      </Link>
+      <div className="flex gap-1">
+        <p>Login</p>
+        <Link href="./login" target="_blank">
+          <LogInIcon className="block cursor-pointer" />
+        </Link>
+      </div>
+
       {currentTheme === "dark" ? (
         <Image
           src="/moon.svg"

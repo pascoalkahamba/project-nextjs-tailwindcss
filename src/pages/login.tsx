@@ -20,11 +20,11 @@ const Login = () => {
     <section className="w-full h-screen text-black-100 font-serif flex flex-col">
       <Header />
       <div
-        className="flex-1 mt-[4.3rem] flex justify-center gap-7
+        className="flex-1 mt-[3.7rem] flex justify-center gap-7
       "
       >
         <Image
-          src="/charles-deluvio-AQRp2NH-O8k-unsplash.jpg"
+          src="/food-2.jpg"
           width={400}
           height={300}
           alt="picture for login"
