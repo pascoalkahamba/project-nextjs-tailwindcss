@@ -3,7 +3,13 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import Image from "next/image";
 
+type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
+
 const Login = () => {
+  const goInsideAccount: GoInsideAccountProps = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <section className="w-full h-screen text-black-100 font-serif flex flex-col">
       <Header />
@@ -19,7 +25,7 @@ const Login = () => {
           className="w-full"
         />
         <form
-          onSubmit={(event) => event.preventDefault()}
+          onSubmit={goInsideAccount}
           className="flex flex-col gap-8 justify-center w-[50%]"
         >
           <input
