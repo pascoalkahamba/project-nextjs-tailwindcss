@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import Image from "next/image";
+import CreateAccount from "../components/createAccount";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
@@ -19,7 +20,8 @@ const Login = () => {
   return (
     <section className="w-full h-screen text-black-100 font-serif flex flex-col">
       <Header />
-      <div
+      <CreateAccount />
+      {/* <div
         className="flex-1 mt-[3.7rem] flex justify-center gap-7
       "
       >
@@ -57,7 +59,7 @@ const Login = () => {
             Entrar
           </button>
         </form>
-      </div>
+      </div> */}
       <Footer />
     </section>
   );
