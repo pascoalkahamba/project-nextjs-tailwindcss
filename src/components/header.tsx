@@ -11,9 +11,9 @@ const Header = () => {
     <header className="w-full h-[70px] text-white bg-slate-900 dark:bg-slate-600 p-1 fixed z-[1000] flex justify-between">
       <Image
         priority
-        src="/public/logotipo.avif"
-        width={300}
-        height={300}
+        src="/logotipo.avif"
+        width={100}
+        height={100}
         alt="picture from the project"
         className="block"
       />
@@ -22,18 +22,18 @@ const Header = () => {
       </Link>
       {currentTheme === "dark" ? (
         <Image
-          src="/public/moon.svg"
-          width={100}
-          height={100}
+          src="/moon.svg"
+          width={50}
+          height={50}
           alt="here look the photo theme"
           onClick={() => setTheme("light")}
           className="block cursor-pointer"
         />
       ) : (
         <Image
-          src="/public/sun.svg"
-          width={100}
-          height={100}
+          src="/sun.svg"
+          width={50}
+          height={50}
           onClick={() => setTheme("dark")}
           alt="here look the photo theme"
           className="block cursor-pointer"
