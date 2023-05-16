@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import Image from "next/image";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
+type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
 const Login = () => {
+  const [form, setForm] = useState({ username: "", password: "" });
+
+  const handleChange: HandleChangeProps = ({ target }) => {
+    setForm({ ...form, [target.id]: target.value });
+  };
   const goInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
   };
@@ -30,11 +36,17 @@ const Login = () => {
         >
           <input
             type="text"
+            value={form.username}
+            onChange={handleChange}
+            id="username"
             placeholder="input your username"
             className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none"
           />
           <input
             type="text"
+            value={form.password}
+            onChange={handleChange}
+            id="password"
             placeholder="input your password"
             className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none"
           />
