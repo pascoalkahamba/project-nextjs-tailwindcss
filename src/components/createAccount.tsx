@@ -15,9 +15,16 @@ const CreateAccount = () => {
     password: "",
     password2: "",
   });
+
+  const [error, setError] = useState(false);
+
   const {
     global: { user, setUser },
   } = useGlobalContext();
+
+  const errorUsername = funValidateInput(form.username);
+  const errorPassword = funValidateInput(form.password);
+  const errorPassword2 = funValidateInput(form.password2);
 
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
@@ -25,6 +32,7 @@ const CreateAccount = () => {
 
   const createAccount: CreateAccountProps = (event) => {
     event.preventDefault();
+    setError(true);
     if (funValidateInput<string>(form.username))
       alert("error please try again later");
     else
@@ -45,32 +53,47 @@ const CreateAccount = () => {
       />
       <form
         onSubmit={createAccount}
-        className="flex flex-col gap-8 justify-center w-[50%]"
+        className="flex flex-col gap-6 justify-center w-[50%]"
       >
-        <input
-          type="text"
-          value={form.username}
-          onChange={handleChange}
-          id="username"
-          placeholder="input your username"
-          className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none"
-        />
-        <input
-          type="text"
-          value={form.password}
-          onChange={handleChange}
-          id="password"
-          placeholder="input your password"
-          className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none"
-        />
-        <input
-          type="text"
-          value={form.password2}
-          onChange={handleChange}
-          id="password2"
-          placeholder="confirm your password"
-          className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none"
-        />
+        <div>
+          <input
+            type="text"
+            value={form.username}
+            onChange={handleChange}
+            id="username"
+            placeholder="input your username"
+            className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none w-full"
+          />
+          {errorUsername && error && (
+            <span className="block ml-3 italic text-red-500">error</span>
+          )}
+        </div>
+        <div>
+          <input
+            type="text"
+            value={form.password}
+            onChange={handleChange}
+            id="password"
+            placeholder="input your password"
+            className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none w-full"
+          />
+          {errorPassword && error && (
+            <span className="block ml-3 italic text-red-500">error</span>
+          )}
+        </div>
+        <div>
+          <input
+            type="text"
+            value={form.password2}
+            onChange={handleChange}
+            id="password2"
+            placeholder="confirm your password"
+            className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none w-full"
+          />
+          {errorPassword2 && error && (
+            <span className="block ml-3 italic text-red-500">error</span>
+          )}
+        </div>
         <button
           type="submit"
           className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center"
