@@ -57,7 +57,7 @@ const Login = () => {
             className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center"
           >
             Entrar
-          </button>
+          </button> 
         </form>
       </div> */}
       <Footer />

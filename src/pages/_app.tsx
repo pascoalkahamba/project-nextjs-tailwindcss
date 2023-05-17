@@ -2,6 +2,7 @@ import { AppProps } from "next/app";
 import Head from "next/head";
 import "../styles/global.css";
 import { ThemeProvider } from "next-themes";
+import { GlobalStorage } from "../components/globalStorage";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -17,7 +18,9 @@ export default function App(props: AppProps) {
         />
       </Head>
       <ThemeProvider enableSystem={true} attribute="class">
-        <Component {...pageProps} />
+        <GlobalStorage>
+          <Component {...pageProps} />
+        </GlobalStorage>
       </ThemeProvider>
     </>
   );

@@ -1,8 +1,13 @@
 import Image from "next/image";
 import React, { useState } from "react";
+import useGlobalContext from "../hooks/useGlobalContext";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
+
+export function funValidateInput<T>(username: T) {
+  return username === "" || (!Number.isNaN(+username) && true);
+}
 
 const CreateAccount = () => {
   const [form, setForm] = useState({
@@ -10,6 +15,9 @@ const CreateAccount = () => {
     password: "",
     password2: "",
   });
+  const {
+    global: { user, setUser },
+  } = useGlobalContext();
 
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
@@ -17,6 +25,10 @@ const CreateAccount = () => {
 
   const createAccount: CreateAccountProps = (event) => {
     event.preventDefault();
+    if (funValidateInput<string>(form.username))
+      alert("error please try again later");
+    else
+      setUser([...user, { username: form.username, password: form.password }]);
   };
 
   return (
@@ -25,7 +37,7 @@ const CreateAccount = () => {
       "
     >
       <Image
-        src="/food-2.jpg"
+        src="/food-1.jpg"
         width={400}
         height={300}
         alt="picture for login"
@@ -63,7 +75,7 @@ const CreateAccount = () => {
           type="submit"
           className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center"
         >
-          Criar
+          Criar Conta
         </button>
       </form>
     </div>
