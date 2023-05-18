@@ -1,4 +1,5 @@
-import React, { ReactNode, createContext, useState } from "react";
+import React, { ReactNode, createContext } from "react";
+import usePersistedStorage from "../hooks/usePersistedStorage";
 
 interface ContextProps {
   name: string;
@@ -17,7 +18,10 @@ interface GlobalStorageProps {
 export const globalContext = createContext<ContextProps | null>(null);
 
 export const GlobalStorage = ({ children }: GlobalStorageProps) => {
-  const [user, setUser] = useState<UserProps<string>[]>([]);
+  const [user, setUser] = usePersistedStorage<UserProps<string>[]>(
+    "dataUser",
+    []
+  );
   return (
     <globalContext.Provider
       value={{ name: "pascoal", age: 21, user: user, setUser: setUser }}

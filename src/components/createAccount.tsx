@@ -33,13 +33,17 @@ const CreateAccount = () => {
   const createAccount: CreateAccountProps = (event) => {
     event.preventDefault();
     setError(true);
-    if (funValidateInput<string>(form.username)) console.log("error!");
+    if (
+      funValidateInput<string>(form.username) ||
+      form.password !== form.password2
+    )
+      console.log("error!");
     else
       setUser([...user, { username: form.username, password: form.password }]);
     setForm({ username: "", password: "", password2: "" });
-    setError(false);
+    // setError(false);
   };
-  console.log(user);
+
   return (
     <div
       className="flex-1 mt-[3.7rem] flex justify-center gap-7
@@ -80,10 +84,17 @@ const CreateAccount = () => {
             placeholder="input your password"
             className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none w-full"
           />
-          {errorPassword && error && (
+          {errorPassword && error ? (
             <span className="block ml-3 italic text-red-500">
               A senha não pode ser apenas numeros.
             </span>
+          ) : (
+            form.password !== form.password2 &&
+            error && (
+              <span className="block ml-3 italic text-red-500">
+                As senhas não podem ser diferentes.
+              </span>
+            )
           )}
         </div>
         <div>
@@ -95,10 +106,17 @@ const CreateAccount = () => {
             placeholder="confirm your password"
             className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none w-full"
           />
-          {errorPassword2 && error && (
+          {errorPassword2 && error ? (
             <span className="block ml-3 italic text-red-500">
               A senha não pode ser apenas numeros.
             </span>
+          ) : (
+            form.password !== form.password2 &&
+            error && (
+              <span className="block ml-3 italic text-red-500">
+                As senhas não podem ser diferentes.
+              </span>
+            )
           )}
         </div>
         <button
