@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
+import { useRouter } from "next/router";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
@@ -22,6 +23,7 @@ const CreateAccount = () => {
     global: { user, setUser },
   } = useGlobalContext();
 
+  const router = useRouter();
   const errorUsername = funValidateInput(form.username);
   const errorPassword = funValidateInput(form.password);
   const errorPassword2 = funValidateInput(form.password2);
@@ -41,6 +43,7 @@ const CreateAccount = () => {
     else
       setUser([...user, { username: form.username, password: form.password }]);
     setForm({ username: "", password: "", password2: "" });
+    router.push("./lostPassword");
     // setError(false);
   };
 
