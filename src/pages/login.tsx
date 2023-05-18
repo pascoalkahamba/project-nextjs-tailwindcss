@@ -1,18 +1,20 @@
-import React, { useState } from "react";
-import Header from "../components/header";
-import Footer from "../components/footer";
-import Image from "next/image";
-import CreateAccount from "../components/createAccount";
-import TakeLogin from "./takeLogin";
+import CreateAccount from "./createAccount";
+import Layout from "../components/layout";
+import Head from "next/head";
+import useGlobalContext from "../hooks/useGlobalContext";
 
 const Login = () => {
+  const {
+    global: { page },
+  } = useGlobalContext();
   return (
-    <section className="w-full h-screen text-black-100 font-serif flex flex-col">
-      <Header />
-      {/* <CreateAccount /> */}
-      <TakeLogin />
-      <Footer />
-    </section>
+    <Layout>
+      <Head>
+        <title>{page} | login</title>
+      </Head>
+      <CreateAccount />
+      {/* <TakeLogin /> */}
+    </Layout>
   );
 };
 

@@ -1,14 +1,11 @@
-import Header from "../components/header";
-import Footer from "../components/footer";
 import Sidebar from "../components/sidebar";
+import Layout from "../components/layout";
 
 const Index = () => {
   return (
-    <section className="w-full h-screen text-black-100 font-serif flex flex-col">
-      <Header />
+    <Layout>
       <Sidebar />
-      <Footer />
-    </section>
+    </Layout>
   );
 };
 
