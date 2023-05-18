@@ -1,11 +1,16 @@
+import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
+import useGlobalContext from "../hooks/useGlobalContext";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
 const TakeLogin = () => {
   const [form, setForm] = useState({ username: "", password: "" });
+  const {
+    global: { page },
+  } = useGlobalContext();
 
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
@@ -19,6 +24,9 @@ const TakeLogin = () => {
       className="flex-1 mt-[3.7rem] flex justify-center gap-7
       "
     >
+      <Head>
+        <title>{page} | fazer login</title>
+      </Head>
       <Image
         src="/food-2.jpg"
         width={400}

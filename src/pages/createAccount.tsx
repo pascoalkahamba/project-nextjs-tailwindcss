@@ -2,6 +2,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
@@ -20,7 +21,7 @@ const CreateAccount = () => {
   const [error, setError] = useState(false);
 
   const {
-    global: { user, setUser },
+    global: { user, setUser, page },
   } = useGlobalContext();
 
   const router = useRouter();
@@ -52,6 +53,9 @@ const CreateAccount = () => {
       className="flex-1 mt-[3.7rem] flex justify-center gap-7
       "
     >
+      <Head>
+        <title>{page} | criar conta</title>
+      </Head>
       <Image
         src="/food-1.jpg"
         width={400}
