@@ -22,9 +22,9 @@ const TakeLogin = () => {
   };
   const goInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
-    setError(true);
     if (funValidateInput(form.password) || funValidateInput(form.username)) {
-      console.log("try again please.");
+      console.log("error try again please.");
+      setError(true);
     } else {
       console.log("All Ok");
     }
@@ -50,6 +50,9 @@ const TakeLogin = () => {
         className="flex flex-col gap-8 justify-center w-[50%]"
       >
         <div>
+          <label htmlFor="username" className="ml-3">
+            Nome{" "}
+          </label>
           <input
             type="text"
             value={form.username}
@@ -66,6 +69,9 @@ const TakeLogin = () => {
         </div>
 
         <div>
+          <label htmlFor="password" className="ml-3">
+            Senha
+          </label>
           <input
             type="text"
             value={form.password}

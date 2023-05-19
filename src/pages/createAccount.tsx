@@ -35,17 +35,18 @@ const CreateAccount = () => {
 
   const createAccount: CreateAccountProps = (event) => {
     event.preventDefault();
-    setError(true);
     if (
       funValidateInput<string>(form.username) ||
+      funValidateInput<string>(form.password) ||
       form.password !== form.password2
-    )
-      console.log("error!");
-    else
+    ) {
+      setError(true);
+    } else {
       setUser([...user, { username: form.username, password: form.password }]);
-    setForm({ username: "", password: "", password2: "" });
-    router.push("./lostPassword");
-    // setError(false);
+      setForm({ username: "", password: "", password2: "" });
+      router.push("./lostPassword");
+      // setError(false);
+    }
   };
 
   return (
@@ -68,6 +69,9 @@ const CreateAccount = () => {
         className="flex flex-col gap-6 justify-center w-[50%]"
       >
         <div>
+          <label htmlFor="username" className="ml-3">
+            Nome{" "}
+          </label>
           <input
             type="text"
             value={form.username}
@@ -83,6 +87,9 @@ const CreateAccount = () => {
           )}
         </div>
         <div>
+          <label htmlFor="password" className="ml-3">
+            Senha
+          </label>
           <input
             type="text"
             value={form.password}
@@ -105,6 +112,9 @@ const CreateAccount = () => {
           )}
         </div>
         <div>
+          <label htmlFor="password2" className="ml-3">
+            Confirma a Senha
+          </label>
           <input
             type="text"
             value={form.password2}
