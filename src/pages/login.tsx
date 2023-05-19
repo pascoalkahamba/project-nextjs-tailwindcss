@@ -5,8 +5,8 @@ import TakeLogin from "./takeLogin";
 const Login = () => {
   return (
     <Layout>
-      {/* <CreateAccount /> */}
-      <TakeLogin />
+      <CreateAccount />
+      {/* <TakeLogin /> */}
     </Layout>
   );
 };

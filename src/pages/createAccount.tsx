@@ -51,18 +51,18 @@ const CreateAccount = () => {
 
   return (
     <div
-      className="flex-1 mt-[3.7rem] flex justify-center gap-7
+      className="flex-1 mt-[3.7rem] flex gap-7
       "
     >
       <Head>
-        <title>{page} | criar conta</title>
+        <title>{page} | Criar conta</title>
       </Head>
       <Image
         src="/food-1.jpg"
-        width={400}
+        width={500}
         height={300}
         alt="picture for login"
-        className="w-full"
+        className="w-[90%]"
       />
       <form
         onSubmit={createAccount}
@@ -78,7 +78,7 @@ const CreateAccount = () => {
             onChange={handleChange}
             id="username"
             placeholder="input your username"
-            className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none w-full"
+            className="rounded-lg transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent w-[90%]"
           />
           {errorUsername && error && (
             <span className="block ml-3 italic text-red-500">
@@ -96,7 +96,7 @@ const CreateAccount = () => {
             onChange={handleChange}
             id="password"
             placeholder="input your password"
-            className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none w-full"
+            className="rounded-lg transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent w-[90%]"
           />
           {errorPassword && error ? (
             <span className="block ml-3 italic text-red-500">
@@ -121,7 +121,7 @@ const CreateAccount = () => {
             onChange={handleChange}
             id="password2"
             placeholder="confirm your password"
-            className="rounded-lg outline-none text-black p-3 bg-black/10 dark:bg-slate-100 border-none w-full"
+            className="rounded-lg transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent w-[90%]"
           />
           {errorPassword2 && error ? (
             <span className="block ml-3 italic text-red-500">

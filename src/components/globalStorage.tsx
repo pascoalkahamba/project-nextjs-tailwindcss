@@ -7,7 +7,7 @@ interface ContextProps<T> {
   setUser: React.Dispatch<React.SetStateAction<UserProps<string>[]>>;
 }
 
-interface UserProps<T> {
+export interface UserProps<T> {
   username: T;
   password: T;
 }
