@@ -25,10 +25,13 @@ interface GlobalStorageProps {
 export const globalContext = createContext<ContextProps<string> | null>(null);
 
 export const GlobalStorage = ({ children }: GlobalStorageProps) => {
-  const [currentUser, setCurrentUser] = useState<CurrentUserProps>({
-    name: "Login",
-    id: 0,
-  });
+  const [currentUser, setCurrentUser] = usePersistedStorage<CurrentUserProps>(
+    "currentUser",
+    {
+      name: "Login",
+      id: 0,
+    }
+  );
   const [user, setUser] = usePersistedStorage<UserProps<string>[]>(
     "dataUser",
     []

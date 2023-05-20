@@ -22,7 +22,7 @@ const CreateAccount = () => {
   const [error, setError] = useState(false);
 
   const {
-    global: { user, setUser, page },
+    global: { user, setUser, page, setCurrentUser },
   } = useGlobalContext();
 
   const router = useRouter();
@@ -51,11 +51,15 @@ const CreateAccount = () => {
           id: Number(Math.round(Math.random() * 1000)),
         },
       ]);
-      setForm({ username: "", password: "", password2: "" });
       router.push("./login");
-      // setError(false);
+      user.forEach((user) =>
+        setCurrentUser({ name: user.username, id: user.id })
+      );
+      setForm({ username: "", password: "", password2: "" });
+      setError(false);
     }
   };
+
   return (
     <Layout>
       <div

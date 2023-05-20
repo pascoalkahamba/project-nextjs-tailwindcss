@@ -1,1 +1,1 @@
-# Mantine Next Template
+# Projecto em desenvolvimento.

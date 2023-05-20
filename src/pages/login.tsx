@@ -14,7 +14,7 @@ const Login = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState(false);
   const {
-    global: { page, user, setCurrentUser },
+    global: { page, user, setCurrentUser, currentUser },
   } = useGlobalContext();
 
   const router = useRouter();
@@ -22,20 +22,21 @@ const Login = () => {
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.username);
 
-  const userDifferent = user
-    .filter(({ id }) => id === id)
-    .some(({ username }) => username === form.username);
+  const newUser = user.filter(({ id }) => id === currentUser.id);
+  console.log(newUser);
 
+  const userDifferent = user.some(({ username }) => username === form.username);
   const thereIsPassword = user
-    .filter(({ id }) => id === id)
+    .filter(({ id }) => id === currentUser.id)
     .some(({ password }) => password === form.password);
+  console.log(currentUser);
 
   const intoAccount = (username: boolean, password: boolean) => {
     if (!username) setError(true);
     if (!password) setError(true);
     else if (username && password) {
-      setError(false);
       router.push("/userProfile");
+      setError(false);
       setCurrentUser({ name: form.username });
     }
   };
@@ -121,7 +122,7 @@ const Login = () => {
               !thereIsPassword &&
               error && (
                 <span className="block ml-3 italic text-red-500">
-                  Senha não cadastrada.
+                  Senha incorreta.
                 </span>
               )
             )}
@@ -132,7 +133,9 @@ const Login = () => {
           >
             Entrar
           </button>
-          <h2 className="text-xl font-medium underline">Perdeu a Senha?</h2>
+          <Link href="/lostPassword">
+            <h2 className="text-xl font-medium underline">Perdeu a Senha?</h2>
+          </Link>
           <h2 className="text-2xl font-bold mt-4">Cadastre-se</h2>
           <p>Ainda não possui conta? Cadastre-se no site.</p>
           <Link href="/createAccount">

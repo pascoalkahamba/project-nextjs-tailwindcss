@@ -3,7 +3,7 @@ import { SetStateAction, useEffect, useState, Dispatch } from "react";
 type PersistedStorageProps<S> = [S, Dispatch<SetStateAction<S>>];
 
 export default function usePersistedStorage<S>(
-  key: "dataUser",
+  key: "dataUser" | "currentUser",
   initialState: S
 ): PersistedStorageProps<S> {
   const [state, setState] = useState(() => {
