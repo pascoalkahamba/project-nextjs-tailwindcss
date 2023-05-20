@@ -2,13 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { useTheme } from "next-themes";
-import { LogIn, LogInIcon, LogOutIcon } from "lucide-react";
+import { LogInIcon, LogOutIcon } from "lucide-react";
+import useGlobalContext from "../hooks/useGlobalContext";
 
 const Header = () => {
   const { systemTheme, theme, setTheme } = useTheme();
 
   const currentTheme = theme === "system" ? systemTheme : theme;
-  const username = "pascoal Kahamba";
+  const {
+    global: { currentUser },
+  } = useGlobalContext();
 
   return (
     <header className="w-full h-[60px] text-white bg-slate-900 dark:bg-slate-600 p-1 fixed z-[1000] flex justify-between items-center">
@@ -24,9 +27,13 @@ const Header = () => {
         </a>
       </Link>
       <div className="flex gap-1">
-        <p>Login</p>
+        <p>{currentUser.name}</p>
         <Link href="./login" target="_blank">
-          <LogInIcon className="block cursor-pointer" />
+          {currentUser.name === "Login" ? (
+            <LogInIcon className="block cursor-pointer" />
+          ) : (
+            <LogOutIcon className="block cursor-pointer" />
+          )}
         </Link>
       </div>
 

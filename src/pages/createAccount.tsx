@@ -43,13 +43,19 @@ const CreateAccount = () => {
     ) {
       setError(true);
     } else {
-      setUser([...user, { username: form.username, password: form.password }]);
+      setUser([
+        ...user,
+        {
+          username: form.username,
+          password: form.password,
+          id: Number(Math.round(Math.random() * 1000)),
+        },
+      ]);
       setForm({ username: "", password: "", password2: "" });
-      router.push("./lostPassword");
+      router.push("./login");
       // setError(false);
     }
   };
-
   return (
     <Layout>
       <div

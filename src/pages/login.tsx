@@ -10,11 +10,11 @@ import { useRouter } from "next/router";
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
-const TakeLogin = () => {
+const Login = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState(false);
   const {
-    global: { page, user },
+    global: { page, user, setCurrentUser },
   } = useGlobalContext();
 
   const router = useRouter();
@@ -22,18 +22,21 @@ const TakeLogin = () => {
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.username);
 
-  const userDifferent = user.some(({ username }) => username === form.username);
+  const userDifferent = user
+    .filter(({ id }) => id === id)
+    .some(({ username }) => username === form.username);
 
-  const thereIsPassword = user.some(
-    ({ password }) => password === form.password
-  );
+  const thereIsPassword = user
+    .filter(({ id }) => id === id)
+    .some(({ password }) => password === form.password);
 
   const intoAccount = (username: boolean, password: boolean) => {
-    if (username) setError(true);
-    if (password) setError(true);
-    else if (username === false && password === false) {
+    if (!username) setError(true);
+    if (!password) setError(true);
+    else if (username && password) {
       setError(false);
       router.push("/userProfile");
+      setCurrentUser({ name: form.username });
     }
   };
 
@@ -89,10 +92,10 @@ const TakeLogin = () => {
                 Nome de usuário invalido.
               </span>
             ) : (
-              userDifferent &&
+              !userDifferent &&
               error && (
                 <span className="block ml-3 italic text-red-500">
-                  Usuário já cadastrado.
+                  Usuário não cadastrado.
                 </span>
               )
             )}
@@ -115,10 +118,10 @@ const TakeLogin = () => {
                 Senha invalida.
               </span>
             ) : (
-              thereIsPassword &&
+              !thereIsPassword &&
               error && (
                 <span className="block ml-3 italic text-red-500">
-                  Senha já cadastrada.
+                  Senha não cadastrada.
                 </span>
               )
             )}
@@ -143,4 +146,4 @@ const TakeLogin = () => {
   );
 };
 
-export default TakeLogin;
+export default Login;
