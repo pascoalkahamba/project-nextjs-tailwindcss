@@ -5,6 +5,7 @@ import useGlobalContext from "../hooks/useGlobalContext";
 import { funValidateInput } from "./createAccount";
 import Link from "next/link";
 import Layout from "../components/layout";
+import { useRouter } from "next/router";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
@@ -16,6 +17,8 @@ const TakeLogin = () => {
     global: { page, user },
   } = useGlobalContext();
 
+  const router = useRouter();
+
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.username);
 
@@ -25,6 +28,15 @@ const TakeLogin = () => {
     ({ password }) => password === form.password
   );
 
+  const intoAccount = (username: boolean, password: boolean) => {
+    if (username) setError(true);
+    if (password) setError(true);
+    else if (username === false && password === false) {
+      setError(false);
+      router.push("/userProfile");
+    }
+  };
+
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
@@ -32,10 +44,9 @@ const TakeLogin = () => {
   const goInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
     if (funValidateInput(form.password) || funValidateInput(form.username)) {
-      console.log("error try again please.");
       setError(true);
     } else {
-      console.log("All Ok");
+      intoAccount(userDifferent, thereIsPassword);
     }
   };
 
@@ -73,10 +84,17 @@ const TakeLogin = () => {
               placeholder="input your username"
               className="rounded-lg w-[97%] transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
-            {errorUsername && error && (
+            {errorUsername && error ? (
               <span className="block ml-3 italic text-red-500">
                 Nome de usuário invalido.
               </span>
+            ) : (
+              userDifferent &&
+              error && (
+                <span className="block ml-3 italic text-red-500">
+                  Usuário já cadastrado.
+                </span>
+              )
             )}
           </div>
 
@@ -92,10 +110,17 @@ const TakeLogin = () => {
               placeholder="input your password"
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
-            {errorPassword && error && (
+            {errorPassword && error ? (
               <span className="block ml-3 italic text-red-500">
                 Senha invalida.
               </span>
+            ) : (
+              thereIsPassword &&
+              error && (
+                <span className="block ml-3 italic text-red-500">
+                  Senha já cadastrada.
+                </span>
+              )
             )}
           </div>
           <button
