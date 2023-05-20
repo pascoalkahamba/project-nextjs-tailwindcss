@@ -68,6 +68,7 @@ const CreateAccount = () => {
         onSubmit={createAccount}
         className="flex flex-col gap-6 justify-center w-[50%]"
       >
+        <h1 className=" text-center mt-5">Cadastre-se</h1>
         <div>
           <label htmlFor="username" className="ml-3">
             Nome{" "}
