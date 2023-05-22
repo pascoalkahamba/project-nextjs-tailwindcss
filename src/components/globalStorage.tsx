@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, useState } from "react";
+import React, { ReactNode, createContext } from "react";
 import usePersistedStorage from "../hooks/usePersistedStorage";
 
 interface ContextProps<T> {
@@ -36,17 +36,18 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     "dataUser",
     []
   );
-  return (
-    <globalContext.Provider
-      value={{
-        page: "Página",
-        user: user,
-        setUser: setUser,
-        currentUser: currentUser,
-        setCurrentUser: setCurrentUser,
-      }}
-    >
-      {children}
-    </globalContext.Provider>
-  );
+  if (typeof window !== "undefined")
+    return (
+      <globalContext.Provider
+        value={{
+          page: "Página",
+          user: user,
+          setUser: setUser,
+          currentUser: currentUser,
+          setCurrentUser: setCurrentUser,
+        }}
+      >
+        {children}
+      </globalContext.Provider>
+    );
 };

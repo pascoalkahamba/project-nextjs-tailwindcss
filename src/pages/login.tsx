@@ -21,7 +21,6 @@ const Login = () => {
 
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.username);
-
   const newUser = user.filter(({ id }) => id === currentUser.id);
   console.log(newUser);
 
@@ -35,9 +34,9 @@ const Login = () => {
     if (!username) setError(true);
     if (!password) setError(true);
     else if (username && password) {
-      router.push("/userProfile");
       setError(false);
       setCurrentUser({ name: form.username });
+      router.push("/userProfile");
     }
   };
 
@@ -56,12 +55,9 @@ const Login = () => {
 
   return (
     <Layout>
-      <div
-        className="flex-1 mt-[3.7rem] flex gap-7
-      "
-      >
+      <div className="flex-1 mt-[3.7rem] flex gap-7">
         <Head>
-          <title>{page} | fazer login</title>
+          <title>{page} | Fazer login</title>
         </Head>
         <Image
           src="/food-2.jpg"
@@ -134,7 +130,9 @@ const Login = () => {
             Entrar
           </button>
           <Link href="/lostPassword">
-            <h2 className="text-xl font-medium underline">Perdeu a Senha?</h2>
+            <a>
+              <h2 className="text-xl font-medium underline">Perdeu a Senha?</h2>
+            </a>
           </Link>
           <h2 className="text-2xl font-bold mt-4">Cadastre-se</h2>
           <p>Ainda não possui conta? Cadastre-se no site.</p>

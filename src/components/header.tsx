@@ -28,7 +28,7 @@ const Header = () => {
       </Link>
       <div className="flex gap-1">
         <p>{currentUser.name}</p>
-        <Link href="./login" target="_blank">
+        <Link href="/login" target="_blank">
           {currentUser.name === "Login" ? (
             <LogInIcon className="block cursor-pointer" />
           ) : (

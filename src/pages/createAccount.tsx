@@ -51,12 +51,13 @@ const CreateAccount = () => {
           id: Number(Math.round(Math.random() * 1000)),
         },
       ]);
-      router.push("./login");
       user.forEach((user) =>
         setCurrentUser({ name: user.username, id: user.id })
       );
       setForm({ username: "", password: "", password2: "" });
       setError(false);
+      setCurrentUser({ name: "Login" });
+      router.push("/login");
     }
   };
 

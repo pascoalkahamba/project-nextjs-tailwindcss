@@ -13,6 +13,7 @@ export default function usePersistedStorage<S>(
       else return initialState;
     }
   });
+
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(state));
   }, [state, key]);
