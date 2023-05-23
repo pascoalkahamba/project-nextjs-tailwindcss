@@ -5,6 +5,7 @@ import useGlobalContext from "../hooks/useGlobalContext";
 import Image from "next/image";
 import { funValidateInput } from "./createAccount";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
@@ -13,21 +14,47 @@ const LostPassword = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState(false);
   const {
-    global: { page },
+    global: { page, user, setUser },
   } = useGlobalContext();
+
+  const router = useRouter();
 
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
 
-  const goInsideAccount: GoInsideAccountProps = (event) => {
-    event.preventDefault();
-  };
-
   const errorUsername = funValidateInput<string>(form.username);
   const errorPassword = funValidateInput<string>(form.password);
-  const thereIsPassword = true;
-  const userDifferent = true;
+  const thereIsUsername = user.some(
+    ({ username }) => username === form.username
+  );
+
+  const intoAccount = (username: boolean) => {
+    if (!username) setError(true);
+    else if (username) {
+      setError(false);
+      const newUser = user.map((user) => {
+        if (user.username === form.username)
+          return {
+            username: form.username,
+            password: form.password,
+            id: user.id,
+          };
+        else return user;
+      });
+      setUser(newUser);
+      router.push("/login");
+    }
+  };
+
+  const goInsideAccount: GoInsideAccountProps = (event) => {
+    event.preventDefault();
+    if (funValidateInput(form.password) || funValidateInput(form.username)) {
+      setError(true);
+    } else {
+      intoAccount(thereIsUsername);
+    }
+  };
 
   return (
     <Layout>
@@ -36,7 +63,7 @@ const LostPassword = () => {
           <title>{page} | Fazer login</title>
         </Head>
         <Image
-          src="/food-2.jpg"
+          src="/food-4.jpg"
           width={500}
           height={300}
           alt="picture for login"
@@ -46,7 +73,9 @@ const LostPassword = () => {
           onSubmit={goInsideAccount}
           className="flex flex-col gap-8 justify-center w-[50%]"
         >
-          <h1 className=" text-center font-bold text-3xl mt-5">Conecte-se</h1>
+          <h1 className=" text-center font-bold text-3xl mt-5">
+            Recupera senha
+          </h1>
 
           <div>
             <label htmlFor="username" className="ml-3">
@@ -65,7 +94,7 @@ const LostPassword = () => {
                 Nome de usuário invalido.
               </span>
             ) : (
-              !userDifferent &&
+              !thereIsUsername &&
               error && (
                 <span className="block ml-3 italic text-red-500">
                   Usuário não cadastrado.
@@ -76,7 +105,7 @@ const LostPassword = () => {
 
           <div>
             <label htmlFor="password" className="ml-3">
-              Senha
+              Nova senha
             </label>
             <input
               type="text"
@@ -86,37 +115,18 @@ const LostPassword = () => {
               placeholder="input your password"
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
-            {errorPassword && error ? (
+            {errorPassword && error && (
               <span className="block ml-3 italic text-red-500">
                 Senha invalida.
               </span>
-            ) : (
-              !thereIsPassword &&
-              error && (
-                <span className="block ml-3 italic text-red-500">
-                  Senha incorreta.
-                </span>
-              )
             )}
           </div>
           <button
             type="submit"
             className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center"
           >
-            Entrar
+            Recuperar
           </button>
-          <Link href="/lostPassword">
-            <a>
-              <h2 className="text-xl font-medium underline">Perdeu a Senha?</h2>
-            </a>
-          </Link>
-          <h2 className="text-2xl font-bold mt-4">Cadastre-se</h2>
-          <p>Ainda não possui conta? Cadastre-se no site.</p>
-          <Link href="/createAccount">
-            <button className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center mb-4">
-              Cadastra-se
-            </button>
-          </Link>
         </form>
       </div>
     </Layout>
