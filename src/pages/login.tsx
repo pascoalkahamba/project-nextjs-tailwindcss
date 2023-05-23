@@ -23,6 +23,7 @@ const Login = () => {
   const errorUsername = funValidateInput(form.username);
   const newUser = user.filter(({ id }) => id === currentUser.id);
   console.log(newUser);
+  console.log(user);
 
   const userDifferent = user.some(({ username }) => username === form.username);
   const thereIsPassword = user
@@ -35,7 +36,7 @@ const Login = () => {
     if (!password) setError(true);
     else if (username && password) {
       setError(false);
-      setCurrentUser({ name: form.username });
+      setCurrentUser({ name: form.username, id: currentUser.id });
       router.push("/userProfile");
     }
   };

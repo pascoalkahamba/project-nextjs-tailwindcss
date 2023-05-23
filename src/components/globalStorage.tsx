@@ -32,22 +32,23 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
       id: 0,
     }
   );
+
   const [user, setUser] = usePersistedStorage<UserProps<string>[]>(
     "dataUser",
     []
   );
-  if (typeof window !== "undefined")
-    return (
-      <globalContext.Provider
-        value={{
-          page: "Página",
-          user: user,
-          setUser: setUser,
-          currentUser: currentUser,
-          setCurrentUser: setCurrentUser,
-        }}
-      >
-        {children}
-      </globalContext.Provider>
-    );
+
+  return (
+    <globalContext.Provider
+      value={{
+        page: "Página",
+        user: user,
+        setUser: setUser,
+        currentUser: currentUser,
+        setCurrentUser: setCurrentUser,
+      }}
+    >
+      {children}
+    </globalContext.Provider>
+  );
 };

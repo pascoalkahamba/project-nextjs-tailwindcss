@@ -4,6 +4,7 @@ import useGlobalContext from "../hooks/useGlobalContext";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Layout from "../components/layout";
+import { User2 } from "lucide-react";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
@@ -51,12 +52,11 @@ const CreateAccount = () => {
           id: Number(Math.round(Math.random() * 1000)),
         },
       ]);
-      user.forEach((user) =>
-        setCurrentUser({ name: user.username, id: user.id })
-      );
+      user.forEach((user) => {
+        setCurrentUser({ name: "Login", id: user.id });
+      });
       setForm({ username: "", password: "", password2: "" });
       setError(false);
-      setCurrentUser({ name: "Login" });
       router.push("/login");
     }
   };
