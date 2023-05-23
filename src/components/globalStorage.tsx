@@ -37,7 +37,6 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     "dataUser",
     []
   );
-
   return (
     <globalContext.Provider
       value={{

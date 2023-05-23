@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { funValidateInput } from "./createAccount";
 import Link from "next/link";
@@ -36,7 +36,9 @@ const Login = () => {
     if (!password) setError(true);
     else if (username && password) {
       setError(false);
+
       setCurrentUser({ name: form.username, id: currentUser.id });
+
       router.push("/userProfile");
     }
   };

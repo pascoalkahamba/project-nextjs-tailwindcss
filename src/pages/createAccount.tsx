@@ -23,7 +23,7 @@ const CreateAccount = () => {
   const [error, setError] = useState(false);
 
   const {
-    global: { user, setUser, page, setCurrentUser },
+    global: { user, setUser, page, setCurrentUser, currentUser },
   } = useGlobalContext();
 
   const router = useRouter();
