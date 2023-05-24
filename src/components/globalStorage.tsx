@@ -1,5 +1,6 @@
 import React, { ReactNode, createContext } from "react";
 import usePersistedStorage from "../hooks/usePersistedStorage";
+import useMounted from "../hooks/useMounted";
 
 interface ContextProps<T> {
   page: T;
@@ -37,6 +38,10 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     "dataUser",
     []
   );
+
+  const mounted = useMounted();
+
+  if (!mounted) return <div></div>;
   return (
     <globalContext.Provider
       value={{

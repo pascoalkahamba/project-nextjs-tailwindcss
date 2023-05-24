@@ -73,7 +73,7 @@ const LostPassword = () => {
           onSubmit={goInsideAccount}
           className="flex flex-col gap-8 justify-center w-[50%]"
         >
-          <h1 className=" text-center font-bold text-3xl mt-5">
+          <h1 className="text-center font-bold text-3xl mt-5">
             Recupera senha
           </h1>
 
