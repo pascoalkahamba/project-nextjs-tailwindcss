@@ -19,6 +19,12 @@ const Login = () => {
 
   const router = useRouter();
 
+  useEffect(() => {
+    fetch("/users/index")
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }, []);
+
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.username);
   const newUser = user.filter(({ id }) => id === currentUser.id);
