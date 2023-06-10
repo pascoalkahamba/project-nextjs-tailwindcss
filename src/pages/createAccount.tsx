@@ -1,9 +1,10 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Layout from "../components/layout";
+import { api } from "../config/axios";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
@@ -24,6 +25,14 @@ const CreateAccount = () => {
   const {
     global: { user, setUser, page, setCurrentUser, currentUser },
   } = useGlobalContext();
+
+  useEffect(() => {
+    api.post("/users", {
+      username: "Pascoal Kahamba",
+      password: "Pascoal941900024",
+      email: "pascoalkahamba25@gmail.com",
+    });
+  }, []);
 
   const router = useRouter();
   const errorUsername = funValidateInput(form.username);

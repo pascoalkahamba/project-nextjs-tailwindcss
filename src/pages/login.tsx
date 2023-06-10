@@ -6,7 +6,7 @@ import { funValidateInput } from "./createAccount";
 import Link from "next/link";
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
-
+ 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
@@ -20,7 +20,7 @@ const Login = () => {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("/users/index")
+    fetch("/api/users")
       .then((response) => response.json())
       .then((data) => console.log(data));
   }, []);
@@ -33,7 +33,7 @@ const Login = () => {
 
   const userDifferent = user.some(({ username }) => username === form.username);
   const thereIsPassword = user
-    .filter(({ id }) => id === currentUser.id)
+    // .filter(({ id }) => id === currentUser.id)
     .some(({ password }) => password === form.password);
   console.log(currentUser);
 
@@ -44,7 +44,6 @@ const Login = () => {
       setError(false);
 
       setCurrentUser({ name: form.username, id: currentUser.id });
-
       router.push("/userProfile");
     }
   };
