@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Layout from "../components/layout";
 import { api } from "../config/axios";
+import { User } from "../model/User";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
@@ -18,40 +19,55 @@ const CreateAccount = () => {
     username: "",
     password: "",
     password2: "",
+    email: "",
   });
 
   const [error, setError] = useState(false);
+
+  const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
   const {
     global: { user, setUser, page, setCurrentUser, currentUser },
   } = useGlobalContext();
 
-  useEffect(() => {
+  function addUser({ email, password, username }: User) {
     api.post("/users", {
-      username: "Pascoal Kahamba",
-      password: "Pascoal941900024",
-      email: "pascoalkahamba25@gmail.com",
+      username,
+      password,
+      email,
     });
-  }, []);
+  }
 
   const router = useRouter();
   const errorUsername = funValidateInput(form.username);
+  const errorEmail = funValidateInput(form.email);
   const errorPassword = funValidateInput(form.password);
   const errorPassword2 = funValidateInput(form.password2);
+  const emailRegex = emailValidate(form.email, regex);
 
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
+
+  function emailValidate(email: string, regex: RegExp) {
+    return regex.test(email);
+  }
 
   const createAccount: CreateAccountProps = (event) => {
     event.preventDefault();
     if (
       funValidateInput<string>(form.username) ||
       funValidateInput<string>(form.password) ||
+      !emailValidate(form.email, regex) ||
       form.password !== form.password2
     ) {
       setError(true);
     } else {
+      addUser({
+        email: form.email,
+        password: form.password,
+        username: form.username,
+      });
       setUser([
         ...user,
         {
@@ -63,7 +79,7 @@ const CreateAccount = () => {
       user.forEach((user) => {
         setCurrentUser({ name: "Login", id: user.id });
       });
-      setForm({ username: "", password: "", password2: "" });
+      setForm({ username: "", password: "", password2: "", email: "" });
       setError(false);
       router.push("/login");
     }
@@ -154,6 +170,31 @@ const CreateAccount = () => {
               error && (
                 <span className="block ml-3 italic text-red-500">
                   As senhas não podem ser diferentes.
+                </span>
+              )
+            )}
+          </div>
+          <div>
+            <label htmlFor="password2" className="ml-3">
+              Digite seu email
+            </label>
+            <input
+              type="text"
+              value={form.email}
+              onChange={handleChange}
+              id="email"
+              placeholder="type your email"
+              className="rounded-lg transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent w-[97%]"
+            />
+            {errorEmail && error ? (
+              <span className="block ml-3 italic text-red-500">
+                Email Invalido.
+              </span>
+            ) : (
+              !emailRegex &&
+              error && (
+                <span className="block ml-3 italic text-red-500">
+                  Email Invalido.
                 </span>
               )
             )}
