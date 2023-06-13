@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { useRouter } from "next/router";
 import Head from "next/head";
