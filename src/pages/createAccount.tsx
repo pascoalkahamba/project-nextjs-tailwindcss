@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -23,6 +23,19 @@ const CreateAccount = () => {
   });
 
   const [error, setError] = useState(false);
+
+  async function getEmail() {
+    const data = await api.get<{ status: string }>("/users");
+    const email = await data.data;
+    console.log(email);
+    return email;
+  }
+
+  useEffect(() => {
+    getEmail();
+  }, []);
+
+  const email = getEmail();
 
   const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 

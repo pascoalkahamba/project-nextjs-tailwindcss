@@ -14,8 +14,6 @@ export async function createUser({ email, password, username }: User) {
 
 export async function differentEmail(email: string) {
   const q = query(collection(firestore, "users"), where("email", "==", email));
-
   const querySnapshot = await getDocs(q);
-  console.log(querySnapshot.docs);
-  return querySnapshot;
+   return querySnapshot;
 }
