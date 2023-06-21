@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -23,19 +23,21 @@ const CreateAccount = () => {
   });
 
   const [error, setError] = useState(false);
+  // console.log(JSON.stringify(email));
 
+  // email.forEach((doc) =>
+  //   console.log(JSON.stringify(doc.id), "=>", JSON.stringify(doc.data()))
+  // );
   async function getEmail() {
-    const data = await api.get<{ status: string }>("/users");
+    const data = await api.get<{ status: string }>(
+      `/users?email=${form.email}`
+    );
     const email = await data.data;
     console.log(email);
     return email;
   }
 
-  useEffect(() => {
-    getEmail();
-  }, []);
-
-  const email = getEmail();
+  // const email = getEmail();
 
   const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
@@ -81,6 +83,7 @@ const CreateAccount = () => {
         password: form.password,
         username: form.username,
       });
+      getEmail();
       setUser([
         ...user,
         {

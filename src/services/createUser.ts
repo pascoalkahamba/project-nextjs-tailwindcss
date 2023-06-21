@@ -12,8 +12,9 @@ export async function createUser({ email, password, username }: User) {
   return docRef;
 }
 
-export async function differentEmail(email: string) {
+export async function isDifferentEmail(email: string) {
   const q = query(collection(firestore, "users"), where("email", "==", email));
   const querySnapshot = await getDocs(q);
-   return querySnapshot;
+  console.log(querySnapshot.docs);
+  return querySnapshot;
 }
