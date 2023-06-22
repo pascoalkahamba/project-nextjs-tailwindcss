@@ -9,7 +9,7 @@ import { User } from "../model/User";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
-type EmailProps = "email cadastrado" | "email nao cadastrado";
+type EmailProps = "email ja cadastrado" | "email nao cadastrado";
 
 export function funValidateInput<T>(username: T) {
   return username === "" || (!Number.isNaN(+username) && true);
@@ -24,7 +24,7 @@ const CreateAccount = () => {
   });
 
   const [error, setError] = useState(false);
-  const [email, setEmail] = useState<EmailProps>("email cadastrado");
+  const [email, setEmail] = useState<EmailProps>("email ja cadastrado");
 
   async function getEmail() {
     const data = await api.get<{ statusEmail: EmailProps }>(
@@ -70,7 +70,7 @@ const CreateAccount = () => {
       funValidateInput<string>(form.username) ||
       funValidateInput<string>(form.password) ||
       !emailValidate(form.email, regex) ||
-      email === "email cadastrado" ||
+      email === "email ja cadastrado" ||
       form.password !== form.password2
     ) {
       setError(true);
@@ -208,7 +208,7 @@ const CreateAccount = () => {
                 Email Invalido.
               </span>
             ) : (
-              email === "email nao cadastrado" &&
+              email === "email ja cadastrado" &&
               error && (
                 <span className="block ml-3 italic text-red-500">
                   Email já cadastrado.

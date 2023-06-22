@@ -33,8 +33,8 @@ export default async function handler(
     return res.status(200).json({
       statusEmail: `${
         sameEmail.docs.length === 0
-          ? "email cadastrado"
-          : "email nao cadastrado"
+          ? "email nao cadastrado"
+          : "email ja cadastrado"
       }`,
     });
   }
