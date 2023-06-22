@@ -31,8 +31,10 @@ export default async function handler(
     const sameEmail = await isDifferentEmail(email);
     console.log(email);
     return res.status(200).json({
-      status: `${
-        sameEmail.docs.length === 0 ? "success" : "email ja cadastro"
+      statusEmail: `${
+        sameEmail.docs.length === 0
+          ? "email cadastrado"
+          : "email nao cadastrado"
       }`,
     });
   }

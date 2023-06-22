@@ -9,6 +9,7 @@ import { User } from "../model/User";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
+type EmailProps = "email cadastrado" | "email nao cadastrado";
 
 export function funValidateInput<T>(username: T) {
   return username === "" || (!Number.isNaN(+username) && true);
@@ -23,21 +24,15 @@ const CreateAccount = () => {
   });
 
   const [error, setError] = useState(false);
-  // console.log(JSON.stringify(email));
+  const [email, setEmail] = useState<EmailProps>("email cadastrado");
 
-  // email.forEach((doc) =>
-  //   console.log(JSON.stringify(doc.id), "=>", JSON.stringify(doc.data()))
-  // );
   async function getEmail() {
-    const data = await api.get<{ status: string }>(
+    const data = await api.get<{ statusEmail: EmailProps }>(
       `/users?email=${form.email}`
     );
-    const email = await data.data;
-    console.log(email);
-    return email;
+    const { statusEmail } = await data.data;
+    setEmail(statusEmail);
   }
-
-  // const email = getEmail();
 
   const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
@@ -70,10 +65,12 @@ const CreateAccount = () => {
 
   const createAccount: CreateAccountProps = (event) => {
     event.preventDefault();
+    getEmail();
     if (
       funValidateInput<string>(form.username) ||
       funValidateInput<string>(form.password) ||
       !emailValidate(form.email, regex) ||
+      email === "email cadastrado" ||
       form.password !== form.password2
     ) {
       setError(true);
@@ -83,7 +80,7 @@ const CreateAccount = () => {
         password: form.password,
         username: form.username,
       });
-      getEmail();
+
       setUser([
         ...user,
         {
@@ -206,11 +203,15 @@ const CreateAccount = () => {
               <span className="block ml-3 italic text-red-500">
                 Email Invalido.
               </span>
+            ) : !emailRegex && error ? (
+              <span className="block ml-3 italic text-red-500">
+                Email Invalido.
+              </span>
             ) : (
-              !emailRegex &&
+              email === "email nao cadastrado" &&
               error && (
                 <span className="block ml-3 italic text-red-500">
-                  Email Invalido.
+                  Email já cadastrado.
                 </span>
               )
             )}
