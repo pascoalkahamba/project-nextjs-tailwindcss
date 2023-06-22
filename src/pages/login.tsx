@@ -12,13 +12,11 @@ type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState(false);
   const {
-    global: { page, user, setCurrentUser, currentUser },
+    global: { page, user, setCurrentUser, currentUser, regex, error, setError },
   } = useGlobalContext();
 
   const router = useRouter();
-  const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
   useEffect(() => {
     fetch(`/users?email=${form.email}?password=${form.password}`)

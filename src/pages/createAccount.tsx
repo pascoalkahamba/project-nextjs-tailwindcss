@@ -26,8 +26,10 @@ const CreateAccount = () => {
     password2: "",
     email: "",
   });
+  const {
+    global: { regex },
+  } = useGlobalContext();
 
-  const [error, setError] = useState(false);
   const [email, setEmail] = useState<EmailProps>("email ja cadastrado");
 
   async function getEmail() {
@@ -38,10 +40,16 @@ const CreateAccount = () => {
     setEmail(status);
   }
 
-  const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-
   const {
-    global: { user, setUser, page, setCurrentUser, currentUser },
+    global: {
+      user,
+      setUser,
+      page,
+      setCurrentUser,
+      currentUser,
+      error,
+      setError,
+    },
   } = useGlobalContext();
 
   function addUser({ email, password, username }: User) {

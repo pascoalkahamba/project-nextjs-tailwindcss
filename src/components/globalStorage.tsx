@@ -1,11 +1,14 @@
-import React, { ReactNode, createContext } from "react";
+import React, { ReactNode, createContext, useState } from "react";
 import usePersistedStorage from "../hooks/usePersistedStorage";
 import useMounted from "../hooks/useMounted";
 
 interface ContextProps<T> {
   page: T;
   user: UserProps<T>[];
+  regex: RegExp;
   currentUser: CurrentUserProps;
+  setError: React.Dispatch<React.SetStateAction<boolean>>;
+  error: boolean;
   setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUserProps>>;
   setUser: React.Dispatch<React.SetStateAction<UserProps<T>[]>>;
 }
@@ -38,14 +41,19 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     "dataUser",
     []
   );
+  const [error, setError] = useState(false);
 
   const mounted = useMounted();
+  const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
   if (!mounted) return <div></div>;
   return (
     <globalContext.Provider
       value={{
+        error: error,
+        setError: setError,
         page: "Página",
+        regex: regex,
         user: user,
         setUser: setUser,
         currentUser: currentUser,
