@@ -15,6 +15,10 @@ export function funValidateInput<T>(username: T) {
   return username === "" || (!Number.isNaN(+username) && true);
 }
 
+export function emailValidate(email: string, regex: RegExp) {
+  return regex.test(email);
+}
+
 const CreateAccount = () => {
   const [form, setForm] = useState({
     username: "",
@@ -27,11 +31,11 @@ const CreateAccount = () => {
   const [email, setEmail] = useState<EmailProps>("email ja cadastrado");
 
   async function getEmail() {
-    const data = await api.get<{ statusEmail: EmailProps }>(
+    const data = await api.get<{ status: EmailProps }>(
       `/users?email=${form.email}`
     );
-    const { statusEmail } = await data.data;
-    setEmail(statusEmail);
+    const { status } = await data.data;
+    setEmail(status);
   }
 
   const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -59,10 +63,6 @@ const CreateAccount = () => {
     setForm({ ...form, [target.id]: target.value });
   };
 
-  function emailValidate(email: string, regex: RegExp) {
-    return regex.test(email);
-  }
-
   const createAccount: CreateAccountProps = (event) => {
     event.preventDefault();
     getEmail();
@@ -80,18 +80,7 @@ const CreateAccount = () => {
         password: form.password,
         username: form.username,
       });
-
-      setUser([
-        ...user,
-        {
-          username: form.username,
-          password: form.password,
-          id: Number(Math.round(Math.random() * 1000)),
-        },
-      ]);
-      user.forEach((user) => {
-        setCurrentUser({ name: "Login", id: user.id });
-      });
+      setCurrentUser({ name: "Login", id: 1 });
       setForm({ username: "", password: "", password2: "", email: "" });
       setError(false);
       router.push("/login");

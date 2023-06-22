@@ -6,44 +6,45 @@ import { funValidateInput } from "./createAccount";
 import Link from "next/link";
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
- 
+
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
 const Login = () => {
-  const [form, setForm] = useState({ username: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState(false);
   const {
     global: { page, user, setCurrentUser, currentUser },
   } = useGlobalContext();
 
   const router = useRouter();
+  const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
   useEffect(() => {
-    fetch("/api/users")
+    fetch(`/users?email=${form.email}?password=${form.password}`)
       .then((response) => response.json())
       .then((data) => console.log(data));
-  }, []);
+  }, [form]);
 
   const errorPassword = funValidateInput(form.password);
-  const errorUsername = funValidateInput(form.username);
+  const errorUsername = funValidateInput(form.email);
   const newUser = user.filter(({ id }) => id === currentUser.id);
   console.log(newUser);
   console.log(user);
 
-  const userDifferent = user.some(({ username }) => username === form.username);
-  const thereIsPassword = user
-    // .filter(({ id }) => id === currentUser.id)
-    .some(({ password }) => password === form.password);
+  const userDifferent = user.some(({ username }) => username === form.email);
+  const thereIsPassword = user.some(
+    ({ password }) => password === form.password
+  );
   console.log(currentUser);
 
-  const intoAccount = (username: boolean, password: boolean) => {
-    if (!username) setError(true);
+  const intoAccount = (email: boolean, password: boolean) => {
+    if (!email) setError(true);
     if (!password) setError(true);
-    else if (username && password) {
+    else if (email && password) {
       setError(false);
 
-      setCurrentUser({ name: form.username, id: currentUser.id });
+      setCurrentUser({ name: form.email, id: currentUser.id });
       router.push("/userProfile");
     }
   };
@@ -54,7 +55,7 @@ const Login = () => {
 
   const goInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
-    if (funValidateInput(form.password) || funValidateInput(form.username)) {
+    if (funValidateInput(form.password) || funValidateInput(form.email)) {
       setError(true);
     } else {
       intoAccount(userDifferent, thereIsPassword);
@@ -81,20 +82,20 @@ const Login = () => {
           <h1 className=" text-center font-bold text-3xl mt-5">Conecte-se</h1>
 
           <div>
-            <label htmlFor="username" className="ml-3">
-              Nome{" "}
+            <label htmlFor="email" className="ml-3">
+              Email{" "}
             </label>
             <input
               type="text"
-              value={form.username}
+              value={form.email}
               onChange={handleChange}
-              id="username"
-              placeholder="input your username"
+              id="email"
+              placeholder="input your email"
               className="rounded-lg w-[97%] transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
             {errorUsername && error ? (
               <span className="block ml-3 italic text-red-500">
-                Nome de usuário invalido.
+                Email de usuário invalido.
               </span>
             ) : (
               !userDifferent &&
@@ -111,7 +112,7 @@ const Login = () => {
               Senha
             </label>
             <input
-              type="text"
+              type="password"
               value={form.password}
               onChange={handleChange}
               id="password"
