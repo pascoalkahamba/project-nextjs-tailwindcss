@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -8,7 +8,6 @@ import { api } from "../config/axios";
 import { User } from "../model/User";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
-type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 type EmailProps = "email ja cadastrado" | "email nao cadastrado";
 
 export function funValidateInput<T>(username: T) {
@@ -20,12 +19,6 @@ export function emailValidate(email: string, regex: RegExp) {
 }
 
 const CreateAccount = () => {
-  const [form, setForm] = useState({
-    username: "",
-    password: "",
-    password2: "",
-    email: "",
-  });
   const {
     global: { regex },
   } = useGlobalContext();
@@ -44,8 +37,11 @@ const CreateAccount = () => {
     global: {
       user,
       setUser,
+      form,
+      setForm,
       page,
       setCurrentUser,
+      handleChange,
       currentUser,
       error,
       setError,
@@ -66,10 +62,6 @@ const CreateAccount = () => {
   const errorPassword = funValidateInput(form.password);
   const errorPassword2 = funValidateInput(form.password2);
   const emailRegex = emailValidate(form.email, regex);
-
-  const handleChange: HandleChangeProps = ({ target }) => {
-    setForm({ ...form, [target.id]: target.value });
-  };
 
   const createAccount: CreateAccountProps = (event) => {
     event.preventDefault();

@@ -8,12 +8,21 @@ import Layout from "../components/layout";
 import { useRouter } from "next/router";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
-type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
 const Login = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
   const {
-    global: { page, user, setCurrentUser, currentUser, regex, error, setError },
+    global: {
+      page,
+      user,
+      setCurrentUser,
+      currentUser,
+      regex,
+      error,
+      form,
+      setForm,
+      setError,
+      handleChange,
+    },
   } = useGlobalContext();
 
   const router = useRouter();
@@ -23,6 +32,16 @@ const Login = () => {
       .then((response) => response.json())
       .then((data) => console.log(data));
   }, [form]);
+
+  function createdAccount() {
+    setForm({
+      username: "",
+      password: "",
+      password2: "",
+      email: "",
+    });
+    setError(false);
+  }
 
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.email);
@@ -45,10 +64,6 @@ const Login = () => {
       setCurrentUser({ name: form.email, id: currentUser.id });
       router.push("/userProfile");
     }
-  };
-
-  const handleChange: HandleChangeProps = ({ target }) => {
-    setForm({ ...form, [target.id]: target.value });
   };
 
   const goInsideAccount: GoInsideAccountProps = (event) => {
@@ -144,7 +159,10 @@ const Login = () => {
           <h2 className="text-2xl font-bold mt-4">Cadastre-se</h2>
           <p>Ainda não possui conta? Cadastre-se no site.</p>
           <Link href="/createAccount">
-            <button className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center mb-4">
+            <button
+              onClick={createdAccount}
+              className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center mb-4"
+            >
               Cadastra-se
             </button>
           </Link>

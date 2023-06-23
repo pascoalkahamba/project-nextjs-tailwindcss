@@ -9,9 +9,26 @@ interface ContextProps<T> {
   currentUser: CurrentUserProps;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   error: boolean;
+  handleChange: HandleChangeProps;
   setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUserProps>>;
   setUser: React.Dispatch<React.SetStateAction<UserProps<T>[]>>;
+  setForm: React.Dispatch<
+    React.SetStateAction<{
+      username: string;
+      password: string;
+      password2: string;
+      email: string;
+    }>
+  >;
+  form: {
+    username: string;
+    password: string;
+    password2: string;
+    email: string;
+  };
 }
+
+type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
 export interface UserProps<T> {
   username: T;
@@ -29,6 +46,12 @@ interface GlobalStorageProps {
 export const globalContext = createContext<ContextProps<string> | null>(null);
 
 export const GlobalStorage = ({ children }: GlobalStorageProps) => {
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+    password2: "",
+    email: "",
+  });
   const [currentUser, setCurrentUser] = usePersistedStorage<CurrentUserProps>(
     "currentUser",
     {
@@ -43,6 +66,10 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
   );
   const [error, setError] = useState(false);
 
+  const handleChange: HandleChangeProps = ({ target }) => {
+    setForm({ ...form, [target.id]: target.value });
+  };
+
   const mounted = useMounted();
   const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
@@ -51,7 +78,10 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     <globalContext.Provider
       value={{
         error: error,
+        form,
+        setForm,
         setError: setError,
+        handleChange: handleChange,
         page: "Página",
         regex: regex,
         user: user,
