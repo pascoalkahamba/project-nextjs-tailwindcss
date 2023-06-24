@@ -26,8 +26,10 @@ const Login = () => {
     },
   } = useGlobalContext();
   const [serverResponse] = useFetch(
-    `/users?email=${form.email}?password=${form.password}`
+    `/users?email=${form.email}&password=${form.password}`
   );
+
+  console.log("response", serverResponse);
 
   const router = useRouter();
   function funCreatedAccount() {
@@ -43,8 +45,6 @@ const Login = () => {
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.email);
 
-  const userDifferent = serverResponse;
-  const thereIsPassword = serverResponse;
   console.log(currentUser);
 
   const funIntoAccount = (email: boolean, password: boolean) => {
@@ -60,10 +60,15 @@ const Login = () => {
 
   const funGoInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
-    if (funValidateInput(form.password) || funValidateInput(form.email)) {
+    if (
+      funValidateInput(form.password) ||
+      funValidateInput(form.email) ||
+      serverResponse !== "success"
+    ) {
       setError(true);
     } else {
-      // funIntoAccount(userDifferent, thereIsPassword);
+      // funIntoAccount(isThereUser, thereIsPassword);
+      console.log("Perfil do usuario acessado.");
     }
   };
 
@@ -91,7 +96,7 @@ const Login = () => {
               Email{" "}
             </label>
             <input
-              type="text"
+              type="email"
               value={form.email}
               onChange={funHandleChange}
               id="email"
@@ -103,7 +108,7 @@ const Login = () => {
                 Email de usuário invalido.
               </span>
             ) : (
-              !userDifferent &&
+              serverResponse === "email nao cadastrado" &&
               error && (
                 <span className="block ml-3 italic text-red-500">
                   Usuário não cadastrado.
@@ -129,7 +134,7 @@ const Login = () => {
                 Senha invalida.
               </span>
             ) : (
-              !thereIsPassword &&
+              serverResponse === "password invalid" &&
               error && (
                 <span className="block ml-3 italic text-red-500">
                   Senha incorreta.
