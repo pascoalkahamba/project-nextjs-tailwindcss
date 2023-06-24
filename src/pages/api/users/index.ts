@@ -25,21 +25,22 @@ export default async function handler(
   if (method === "GET") {
     const { email, password } = req.query as CustomQuery;
     const sameEmail = await isDifferentEmail(email);
-    if (sameEmail.docs.length === 0) {
-      return res.status(200).json({
-        status: "email nao cadastrado",
-      });
-    } else {
+    if (sameEmail.docs.length > 0) {
       sameEmail.docs.forEach((doc) => {
         const data = doc.data() as User;
         if (password === data.password) {
           return res.status(200).json({
             status: "success",
           });
+        } else {
+          return res.status(200).json({
+            status: "password invalid",
+          });
         }
-        return res.status(200).json({
-          status: "password invalid",
-        });
+      });
+    } else {
+      return res.status(200).json({
+        status: "email nao cadastrado",
       });
     }
   }

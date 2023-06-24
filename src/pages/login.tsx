@@ -1,11 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { funValidateInput } from "./createAccount";
 import Link from "next/link";
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
+import { api } from "../config/axios";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
@@ -13,7 +14,7 @@ const Login = () => {
   const {
     global: {
       page,
-      user,
+      serverResponse,
       setCurrentUser,
       currentUser,
       regex,
@@ -21,19 +22,20 @@ const Login = () => {
       form,
       setForm,
       setError,
-      handleChange,
+      funHandleChange,
     },
   } = useGlobalContext();
 
   const router = useRouter();
 
   useEffect(() => {
-    fetch(`/users?email=${form.email}?password=${form.password}`)
-      .then((response) => response.json())
+    api
+      .get(`/users?email=${form.email}?password=${form.password}`)
+      .then((response) => response.data)
       .then((data) => console.log(data));
   }, [form]);
 
-  function createdAccount() {
+  function funCreatedAccount() {
     setForm({
       username: "",
       password: "",
@@ -45,17 +47,12 @@ const Login = () => {
 
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.email);
-  const newUser = user.filter(({ id }) => id === currentUser.id);
-  console.log(newUser);
-  console.log(user);
 
-  const userDifferent = user.some(({ username }) => username === form.email);
-  const thereIsPassword = user.some(
-    ({ password }) => password === form.password
-  );
+  const userDifferent = serverResponse;
+  const thereIsPassword = serverResponse;
   console.log(currentUser);
 
-  const intoAccount = (email: boolean, password: boolean) => {
+  const funIntoAccount = (email: boolean, password: boolean) => {
     if (!email) setError(true);
     if (!password) setError(true);
     else if (email && password) {
@@ -66,12 +63,12 @@ const Login = () => {
     }
   };
 
-  const goInsideAccount: GoInsideAccountProps = (event) => {
+  const funGoInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
     if (funValidateInput(form.password) || funValidateInput(form.email)) {
       setError(true);
     } else {
-      intoAccount(userDifferent, thereIsPassword);
+      // funIntoAccount(userDifferent, thereIsPassword);
     }
   };
 
@@ -89,7 +86,7 @@ const Login = () => {
           className="w-full"
         />
         <form
-          onSubmit={goInsideAccount}
+          onSubmit={funGoInsideAccount}
           className="flex flex-col gap-8 justify-center w-[50%]"
         >
           <h1 className=" text-center font-bold text-3xl mt-5">Conecte-se</h1>
@@ -101,7 +98,7 @@ const Login = () => {
             <input
               type="text"
               value={form.email}
-              onChange={handleChange}
+              onChange={funHandleChange}
               id="email"
               placeholder="input your email"
               className="rounded-lg w-[97%] transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
@@ -127,7 +124,7 @@ const Login = () => {
             <input
               type="password"
               value={form.password}
-              onChange={handleChange}
+              onChange={funHandleChange}
               id="password"
               placeholder="input your password"
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
@@ -160,7 +157,7 @@ const Login = () => {
           <p>Ainda não possui conta? Cadastre-se no site.</p>
           <Link href="/createAccount">
             <button
-              onClick={createdAccount}
+              onClick={funCreatedAccount}
               className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center mb-4"
             >
               Cadastra-se

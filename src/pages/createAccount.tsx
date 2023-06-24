@@ -1,54 +1,49 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Layout from "../components/layout";
 import { api } from "../config/axios";
 import { User } from "../model/User";
+import { ServerResponsePrpos } from "../components/globalStorage";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
-type EmailProps = "email ja cadastrado" | "email nao cadastrado";
 
 export function funValidateInput<T>(username: T) {
   return username === "" || (!Number.isNaN(+username) && true);
 }
 
-export function emailValidate(email: string, regex: RegExp) {
+export function funEmailValidate(email: string, regex: RegExp) {
   return regex.test(email);
 }
 
 const CreateAccount = () => {
-  const {
-    global: { regex },
-  } = useGlobalContext();
-
-  const [email, setEmail] = useState<EmailProps>("email ja cadastrado");
-
-  async function getEmail() {
-    const data = await api.get<{ status: EmailProps }>(
+  async function funGetEmail() {
+    const data = await api.get<{ status: ServerResponsePrpos }>(
       `/users?email=${form.email}`
     );
     const { status } = await data.data;
-    setEmail(status);
+    setServerResponse(status);
   }
 
   const {
     global: {
-      user,
-      setUser,
+      regex,
       form,
       setForm,
       page,
+      serverResponse,
       setCurrentUser,
-      handleChange,
+      setServerResponse,
+      funHandleChange,
       currentUser,
       error,
       setError,
     },
   } = useGlobalContext();
 
-  function addUser({ email, password, username }: User) {
+  function funAddUser({ email, password, username }: User) {
     api.post("/users", {
       username,
       password,
@@ -61,21 +56,21 @@ const CreateAccount = () => {
   const errorEmail = funValidateInput(form.email);
   const errorPassword = funValidateInput(form.password);
   const errorPassword2 = funValidateInput(form.password2);
-  const emailRegex = emailValidate(form.email, regex);
+  const emailRegex = funEmailValidate(form.email, regex);
 
-  const createAccount: CreateAccountProps = (event) => {
+  const funCreateAccount: CreateAccountProps = (event) => {
     event.preventDefault();
-    getEmail();
+    funGetEmail();
     if (
       funValidateInput<string>(form.username) ||
       funValidateInput<string>(form.password) ||
-      !emailValidate(form.email, regex) ||
-      email === "email ja cadastrado" ||
+      !funEmailValidate(form.email, regex) ||
+      serverResponse !== "email nao cadastrado" ||
       form.password !== form.password2
     ) {
       setError(true);
     } else {
-      addUser({
+      funAddUser({
         email: form.email,
         password: form.password,
         username: form.username,
@@ -104,7 +99,7 @@ const CreateAccount = () => {
           className="w-[97%]"
         />
         <form
-          onSubmit={createAccount}
+          onSubmit={funCreateAccount}
           className="flex flex-col gap-6 justify-center w-[50%]"
         >
           <h1 className=" text-center font-bold text-3xl mt-5">Cadastre-se</h1>
@@ -115,7 +110,7 @@ const CreateAccount = () => {
             <input
               type="text"
               value={form.username}
-              onChange={handleChange}
+              onChange={funHandleChange}
               id="username"
               placeholder="input your username"
               className="rounded-lg transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent w-[97%]"
@@ -131,9 +126,9 @@ const CreateAccount = () => {
               Senha
             </label>
             <input
-              type="text"
+              type="password"
               value={form.password}
-              onChange={handleChange}
+              onChange={funHandleChange}
               id="password"
               placeholder="input your password"
               className="rounded-lg transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent w-[97%]"
@@ -156,9 +151,9 @@ const CreateAccount = () => {
               Confirma a Senha
             </label>
             <input
-              type="text"
+              type="password"
               value={form.password2}
-              onChange={handleChange}
+              onChange={funHandleChange}
               id="password2"
               placeholder="confirm your password"
               className="rounded-lg transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent w-[97%]"
@@ -181,9 +176,9 @@ const CreateAccount = () => {
               Digite seu email
             </label>
             <input
-              type="text"
+              type="email"
               value={form.email}
-              onChange={handleChange}
+              onChange={funHandleChange}
               id="email"
               placeholder="type your email"
               className="rounded-lg transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent w-[97%]"
@@ -197,7 +192,7 @@ const CreateAccount = () => {
                 Email Invalido.
               </span>
             ) : (
-              email === "email ja cadastrado" &&
+              serverResponse !== "email nao cadastrado" &&
               error && (
                 <span className="block ml-3 italic text-red-500">
                   Email já cadastrado.

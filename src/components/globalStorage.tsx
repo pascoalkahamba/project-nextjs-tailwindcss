@@ -2,16 +2,16 @@ import React, { ReactNode, createContext, useState } from "react";
 import usePersistedStorage from "../hooks/usePersistedStorage";
 import useMounted from "../hooks/useMounted";
 
-interface ContextProps<T> {
-  page: T;
-  user: UserProps<T>[];
+interface ContextProps {
+  page: string;
   regex: RegExp;
   currentUser: CurrentUserProps;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   error: boolean;
-  handleChange: HandleChangeProps;
+  funHandleChange: HandleChangeProps;
   setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUserProps>>;
-  setUser: React.Dispatch<React.SetStateAction<UserProps<T>[]>>;
+  setServerResponse: React.Dispatch<React.SetStateAction<ServerResponsePrpos>>;
+  serverResponse: ServerResponsePrpos;
   setForm: React.Dispatch<
     React.SetStateAction<{
       username: string;
@@ -29,6 +29,10 @@ interface ContextProps<T> {
 }
 
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
+export type ServerResponsePrpos =
+  | "success"
+  | "email nao cadastrado"
+  | "password invalid";
 
 export interface UserProps<T> {
   username: T;
@@ -43,9 +47,12 @@ interface CurrentUserProps {
 interface GlobalStorageProps {
   children: ReactNode;
 }
-export const globalContext = createContext<ContextProps<string> | null>(null);
+export const globalContext = createContext<ContextProps | null>(null);
 
 export const GlobalStorage = ({ children }: GlobalStorageProps) => {
+  const [serverResponse, setServerResponse] = useState<ServerResponsePrpos>(
+    "email nao cadastrado"
+  );
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -60,13 +67,9 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     }
   );
 
-  const [user, setUser] = usePersistedStorage<UserProps<string>[]>(
-    "dataUser",
-    []
-  );
   const [error, setError] = useState(false);
 
-  const handleChange: HandleChangeProps = ({ target }) => {
+  const funHandleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
 
@@ -78,14 +81,14 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     <globalContext.Provider
       value={{
         error: error,
+        serverResponse,
+        setServerResponse,
         form,
         setForm,
         setError: setError,
-        handleChange: handleChange,
+        funHandleChange: funHandleChange,
         page: "Página",
         regex: regex,
-        user: user,
-        setUser: setUser,
         currentUser: currentUser,
         setCurrentUser: setCurrentUser,
       }}
