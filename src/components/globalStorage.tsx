@@ -10,8 +10,6 @@ interface ContextProps {
   error: boolean;
   funHandleChange: HandleChangeProps;
   setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUserProps>>;
-  setServerResponse: React.Dispatch<React.SetStateAction<ServerResponsePrpos>>;
-  serverResponse: ServerResponsePrpos;
   setForm: React.Dispatch<
     React.SetStateAction<{
       username: string;
@@ -29,10 +27,6 @@ interface ContextProps {
 }
 
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
-export type ServerResponsePrpos =
-  | "success"
-  | "email nao cadastrado"
-  | "password invalid";
 
 export interface UserProps<T> {
   username: T;
@@ -50,9 +44,6 @@ interface GlobalStorageProps {
 export const globalContext = createContext<ContextProps | null>(null);
 
 export const GlobalStorage = ({ children }: GlobalStorageProps) => {
-  const [serverResponse, setServerResponse] = useState<ServerResponsePrpos>(
-    "email nao cadastrado"
-  );
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -81,8 +72,6 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     <globalContext.Provider
       value={{
         error: error,
-        serverResponse,
-        setServerResponse,
         form,
         setForm,
         setError: setError,

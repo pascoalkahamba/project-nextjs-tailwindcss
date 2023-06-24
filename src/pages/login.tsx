@@ -7,6 +7,7 @@ import Link from "next/link";
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
 import { api } from "../config/axios";
+import { useFetch } from "../hooks/useFetch";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
@@ -14,7 +15,6 @@ const Login = () => {
   const {
     global: {
       page,
-      serverResponse,
       setCurrentUser,
       currentUser,
       regex,
@@ -25,16 +25,11 @@ const Login = () => {
       funHandleChange,
     },
   } = useGlobalContext();
+  const [serverResponse] = useFetch(
+    `/users?email=${form.email}?password=${form.password}`
+  );
 
   const router = useRouter();
-
-  useEffect(() => {
-    api
-      .get(`/users?email=${form.email}?password=${form.password}`)
-      .then((response) => response.data)
-      .then((data) => console.log(data));
-  }, [form]);
-
   function funCreatedAccount() {
     setForm({
       username: "",

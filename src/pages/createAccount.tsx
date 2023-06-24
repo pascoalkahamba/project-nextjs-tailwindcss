@@ -6,7 +6,7 @@ import Head from "next/head";
 import Layout from "../components/layout";
 import { api } from "../config/axios";
 import { User } from "../model/User";
-import { ServerResponsePrpos } from "../components/globalStorage";
+import { useFetch } from "../hooks/useFetch";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
@@ -19,29 +19,21 @@ export function funEmailValidate(email: string, regex: RegExp) {
 }
 
 const CreateAccount = () => {
-  async function funGetEmail() {
-    const data = await api.get<{ status: ServerResponsePrpos }>(
-      `/users?email=${form.email}`
-    );
-    const { status } = await data.data;
-    setServerResponse(status);
-  }
-
   const {
     global: {
       regex,
       form,
       setForm,
       page,
-      serverResponse,
       setCurrentUser,
-      setServerResponse,
       funHandleChange,
       currentUser,
       error,
       setError,
     },
   } = useGlobalContext();
+
+  const [serverResponse] = useFetch(`/users?email=${form.email}`);
 
   function funAddUser({ email, password, username }: User) {
     api.post("/users", {
@@ -60,7 +52,6 @@ const CreateAccount = () => {
 
   const funCreateAccount: CreateAccountProps = (event) => {
     event.preventDefault();
-    funGetEmail();
     if (
       funValidateInput<string>(form.username) ||
       funValidateInput<string>(form.password) ||
