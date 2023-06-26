@@ -31,16 +31,19 @@ export default async function handler(
         if (password === data.password) {
           return res.status(200).json({
             status: "success",
+            username: data.username,
           });
         } else {
           return res.status(200).json({
             status: "password invalid",
+            username: "Login",
           });
         }
       });
     } else {
       return res.status(200).json({
         status: "email nao cadastrado",
+        username: "Login",
       });
     }
   }

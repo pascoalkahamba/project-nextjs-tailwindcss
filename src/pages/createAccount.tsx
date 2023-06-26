@@ -10,7 +10,7 @@ import { useFetch } from "../hooks/useFetch";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
-export function funValidateInput<T>(username: T) {
+export function funValidateInput(username: string) {
   return username === "" || (!Number.isNaN(+username) && true);
 }
 
@@ -33,7 +33,7 @@ const CreateAccount = () => {
     },
   } = useGlobalContext();
 
-  const [serverResponse] = useFetch(`/users?email=${form.email}`);
+  const [response] = useFetch(`/users?email=${form.email}`);
 
   function funAddUser({ email, password, username }: User) {
     api.post("/users", {
@@ -53,10 +53,10 @@ const CreateAccount = () => {
   const funCreateAccount: CreateAccountProps = (event) => {
     event.preventDefault();
     if (
-      funValidateInput<string>(form.username) ||
-      funValidateInput<string>(form.password) ||
-      !funEmailValidate(form.email, regex) ||
-      serverResponse !== "email nao cadastrado" ||
+      errorUsername ||
+      errorPassword ||
+      !emailRegex ||
+      response !== "email nao cadastrado" ||
       form.password !== form.password2
     ) {
       setError(true);
@@ -66,7 +66,7 @@ const CreateAccount = () => {
         password: form.password,
         username: form.username,
       });
-      setCurrentUser({ name: "Login", id: 1 });
+
       setForm({ username: "", password: "", password2: "", email: "" });
       setError(false);
       router.push("/login");
@@ -183,7 +183,7 @@ const CreateAccount = () => {
                 Email Invalido.
               </span>
             ) : (
-              serverResponse !== "email nao cadastrado" &&
+              response !== "email nao cadastrado" &&
               error && (
                 <span className="block ml-3 italic text-red-500">
                   Email já cadastrado.

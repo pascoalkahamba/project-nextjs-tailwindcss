@@ -2,7 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useEffect } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
-import { funValidateInput } from "./createAccount";
+import { funEmailValidate, funValidateInput } from "./createAccount";
 import Link from "next/link";
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
@@ -25,11 +25,14 @@ const Login = () => {
       funHandleChange,
     },
   } = useGlobalContext();
-  const [serverResponse] = useFetch(
+
+  const [response] = useFetch(
     `/users?email=${form.email}&password=${form.password}`
   );
 
-  console.log("response", serverResponse);
+  // const response = "email nao cadastrado";
+
+  console.log("response", response);
 
   const router = useRouter();
   function funCreatedAccount() {
@@ -44,6 +47,8 @@ const Login = () => {
 
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.email);
+  // const emailInvalid = false;
+  const emailInvalid = funEmailValidate(form.email, regex);
 
   console.log(currentUser);
 
@@ -53,7 +58,6 @@ const Login = () => {
     else if (email && password) {
       setError(false);
 
-      setCurrentUser({ name: form.email, id: currentUser.id });
       router.push("/userProfile");
     }
   };
@@ -61,13 +65,15 @@ const Login = () => {
   const funGoInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
     if (
-      funValidateInput(form.password) ||
-      funValidateInput(form.email) ||
-      serverResponse !== "success"
+      errorPassword ||
+      errorUsername ||
+      !emailInvalid ||
+      response !== "success"
     ) {
       setError(true);
     } else {
       // funIntoAccount(isThereUser, thereIsPassword);
+      setCurrentUser({ name: currentUser.name, state: "online" });
       console.log("Perfil do usuario acessado.");
     }
   };
@@ -107,8 +113,12 @@ const Login = () => {
               <span className="block ml-3 italic text-red-500">
                 Email de usuário invalido.
               </span>
+            ) : !emailInvalid && error ? (
+              <span className="block ml-3 italic text-red-500">
+                Email Invalido.
+              </span>
             ) : (
-              serverResponse === "email nao cadastrado" &&
+              response === "email nao cadastrado" &&
               error && (
                 <span className="block ml-3 italic text-red-500">
                   Usuário não cadastrado.
@@ -134,7 +144,7 @@ const Login = () => {
                 Senha invalida.
               </span>
             ) : (
-              serverResponse === "password invalid" &&
+              response === "password invalid" &&
               error && (
                 <span className="block ml-3 italic text-red-500">
                   Senha incorreta.

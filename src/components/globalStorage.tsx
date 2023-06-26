@@ -35,7 +35,7 @@ export interface UserProps<T> {
 }
 interface CurrentUserProps {
   name: string;
-  id?: number;
+  state: "online" | "offline";
 }
 
 interface GlobalStorageProps {
@@ -50,13 +50,10 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     password2: "",
     email: "",
   });
-  const [currentUser, setCurrentUser] = usePersistedStorage<CurrentUserProps>(
-    "currentUser",
-    {
-      name: "Login",
-      id: 0,
-    }
-  );
+  const [currentUser, setCurrentUser] = useState<CurrentUserProps>({
+    name: "Login",
+    state: "offline",
+  });
 
   const [error, setError] = useState(false);
 
