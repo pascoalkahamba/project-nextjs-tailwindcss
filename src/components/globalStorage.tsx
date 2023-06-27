@@ -5,11 +5,13 @@ import useMounted from "../hooks/useMounted";
 interface ContextProps {
   page: string;
   regex: RegExp;
-  currentUser: CurrentUserProps;
+  currentUser: string;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   error: boolean;
+  setLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  login: boolean;
   funHandleChange: HandleChangeProps;
-  setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUserProps>>;
+  setCurrentUser: React.Dispatch<React.SetStateAction<string>>;
   setForm: React.Dispatch<
     React.SetStateAction<{
       username: string;
@@ -35,7 +37,7 @@ export interface UserProps<T> {
 }
 interface CurrentUserProps {
   name: string;
-  state: "online" | "offline";
+  state?: "online" | "offline";
 }
 
 interface GlobalStorageProps {
@@ -50,12 +52,10 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     password2: "",
     email: "",
   });
-  const [currentUser, setCurrentUser] = useState<CurrentUserProps>({
-    name: "Login",
-    state: "offline",
-  });
+  const [currentUser, setCurrentUser] = useState("");
 
   const [error, setError] = useState(false);
+  const [login, setLogin] = useState(false);
 
   const funHandleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
@@ -70,6 +70,8 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
       value={{
         error: error,
         form,
+        login: login,
+        setLogin: setLogin,
         setForm,
         setError: setError,
         funHandleChange: funHandleChange,

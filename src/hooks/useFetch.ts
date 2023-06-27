@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "../config/axios";
 import useGlobalContext from "./useGlobalContext";
 
@@ -14,12 +14,12 @@ export function useFetch(url: string) {
   const {
     global: { setCurrentUser },
   } = useGlobalContext();
+
   api
     .get<{ status: ServerResponseProps; username: string }>(url)
     .then((response) => response.data)
     .then((data) => {
-      setState(data.status),
-        setCurrentUser({ name: data.username, state: "offline" });
+      setState(data.status), setCurrentUser(data.username);
     });
 
   return [state];

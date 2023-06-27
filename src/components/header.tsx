@@ -10,9 +10,21 @@ const Header = () => {
 
   const currentTheme = theme === "system" ? systemTheme : theme;
   const {
-    global: { currentUser },
+    global: { login, currentUser, setLogin, setForm, setError },
   } = useGlobalContext();
 
+  function funOutLogin() {
+    if (login) {
+      setForm({
+        username: "",
+        password: "",
+        password2: "",
+        email: "",
+      });
+      setLogin(false);
+      setError(false);
+    }
+  }
   return (
     <header className="w-full h-[60px] text-white bg-slate-900 dark:bg-slate-600 p-1 fixed z-[1000] flex justify-between items-center">
       <Link href="/">
@@ -27,13 +39,15 @@ const Header = () => {
         </a>
       </Link>
       <div className="flex gap-1">
-        <p> {currentUser.state === "online" ? currentUser.name : "Login"}</p>
         <Link href="/login" target="_blank">
-          {currentUser.name === "Login" && currentUser.state === "offline" ? (
-            <LogInIcon className="block cursor-pointer" />
-          ) : (
-            <LogOutIcon className="block cursor-pointer" />
-          )}
+          <a className="flex gap-2 items-center" onClick={funOutLogin}>
+            <p className="text-lg"> {login ? currentUser : "Login"}</p>
+            {login ? (
+              <LogOutIcon className="block cursor-pointer" />
+            ) : (
+              <LogInIcon className="block cursor-pointer" />
+            )}
+          </a>
         </Link>
       </div>
 

@@ -67,9 +67,9 @@ const CreateAccount = () => {
         username: form.username,
       });
 
+      router.push("/login");
       setForm({ username: "", password: "", password2: "", email: "" });
       setError(false);
-      router.push("/login");
     }
   };
 
