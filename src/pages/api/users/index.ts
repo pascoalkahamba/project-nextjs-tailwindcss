@@ -1,6 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createUser, isDifferentEmail } from "../../../services/createUser";
+import {
+  createUser,
+  isDifferentEmail,
+  upDataUser,
+} from "../../../services/createUser";
 import { User } from "../../../model/User";
 import { CustomQuery } from "../../../model/custom";
 
@@ -18,6 +22,9 @@ export default async function handler(
       return res.status(200).json({ status: "success" });
     } else {
       console.log(sameEmail.docs);
+      if (data.username === "") {
+        await upDataUser(data.password);
+      }
       console.log("Email ja cadastro");
       return res.status(200).json({ status: "email ja cadastrado." });
     }

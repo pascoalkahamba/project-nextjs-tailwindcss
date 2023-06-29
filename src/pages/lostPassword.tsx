@@ -7,6 +7,7 @@ import { funEmailValidate, funValidateInput } from "./createAccount";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useFetch } from "../hooks/useFetch";
+import { api } from "../config/axios";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
@@ -33,12 +34,19 @@ const LostPassword = () => {
     setError(false);
   }
 
+  function funUpdataUser(password: string) {
+    api.post("/users", {
+      password,
+    });
+  }
+
   const funGoInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
     if (errorPassword || errorUsername || !emailInvalid) {
       setError(true);
     } else {
       funCreatedAccount();
+      funUpdataUser(form.password);
       router.push("/login");
     }
   };
