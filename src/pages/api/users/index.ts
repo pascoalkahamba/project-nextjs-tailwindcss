@@ -24,7 +24,6 @@ export default async function handler(
       sameEmail.docs.forEach(async (doc) => {
         await funUpDataUser(data.password, doc.id);
       });
-      console.log("Email ja cadastro");
       return res.status(200).json({ status: "email ja cadastrado." });
     }
   }

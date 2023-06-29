@@ -132,7 +132,8 @@ const LostPassword = () => {
               Nova senha
             </label>
             <input
-              type="text"
+              type="password"
+              minLength={6}
               value={form.password}
               onChange={funHandleChange}
               id="password"

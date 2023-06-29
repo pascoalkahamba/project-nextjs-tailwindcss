@@ -136,6 +136,7 @@ const Login = () => {
             <input
               type="password"
               value={form.password}
+              minLength={6}
               onChange={funHandleChange}
               id="password"
               placeholder="input your password"
@@ -161,7 +162,7 @@ const Login = () => {
             {loading ? "Carregando..." : "Entrar"}
           </button>
           <Link href="/lostPassword">
-            <a>
+            <a onClick={funCreatedAccount}>
               <h2 className="text-xl font-medium underline">Perdeu a Senha?</h2>
             </a>
           </Link>

@@ -101,6 +101,7 @@ const CreateAccount = () => {
             <input
               type="text"
               value={form.username}
+              minLength={6}
               onChange={funHandleChange}
               id="username"
               placeholder="input your username"
@@ -119,6 +120,7 @@ const CreateAccount = () => {
             <input
               type="password"
               value={form.password}
+              minLength={6}
               onChange={funHandleChange}
               id="password"
               placeholder="input your password"
@@ -144,6 +146,7 @@ const CreateAccount = () => {
             <input
               type="password"
               value={form.password2}
+              minLength={6}
               onChange={funHandleChange}
               id="password2"
               placeholder="confirm your password"
