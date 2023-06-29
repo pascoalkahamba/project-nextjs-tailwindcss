@@ -1,9 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
-  createUser,
-  isDifferentEmail,
-  upDataUser,
+  funCreateUser,
+  funIsDifferentEmail,
+  funUpDataUser,
 } from "../../../services/createUser";
 import { User } from "../../../model/User";
 import { CustomQuery } from "../../../model/custom";
@@ -16,22 +16,21 @@ export default async function handler(
 
   if (method === "POST") {
     const data = req.body as User;
-    const sameEmail = await isDifferentEmail(data.email);
+    const sameEmail = await funIsDifferentEmail(data.email);
     if (sameEmail.docs.length === 0) {
-      await createUser(data);
+      await funCreateUser(data);
       return res.status(200).json({ status: "success" });
     } else {
-      console.log(sameEmail.docs);
-      if (data.username === "") {
-        await upDataUser(data.password);
-      }
+      sameEmail.docs.forEach(async (doc) => {
+        await funUpDataUser(data.password, doc.id);
+      });
       console.log("Email ja cadastro");
       return res.status(200).json({ status: "email ja cadastrado." });
     }
   }
   if (method === "GET") {
     const { email, password } = req.query as CustomQuery;
-    const sameEmail = await isDifferentEmail(email);
+    const sameEmail = await funIsDifferentEmail(email);
     if (sameEmail.docs.length > 0) {
       sameEmail.docs.forEach((doc) => {
         const data = doc.data() as User;

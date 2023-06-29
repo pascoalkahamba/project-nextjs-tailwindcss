@@ -10,7 +10,7 @@ import {
   doc,
 } from "firebase/firestore";
 
-export async function createUser({ email, password, username }: User) {
+export async function funCreateUser({ email, password, username }: User) {
   // Add a new document with a generated id.
   const docRef = await addDoc(collection(firestore, "users"), {
     username,
@@ -20,16 +20,17 @@ export async function createUser({ email, password, username }: User) {
   return docRef;
 }
 
-export async function isDifferentEmail(email: string) {
+export async function funIsDifferentEmail(email: string) {
   const q = query(collection(firestore, "users"), where("email", "==", email));
   const querySnapshot = await getDocs(q);
   return querySnapshot;
 }
 
-export async function upDataUser(password: string) {
+export async function funUpDataUser(password: string, idRef: string) {
   // Add a new document with a generated id.
-  const docRef = doc(firestore, "users");
+  const docRef = doc(firestore, "users", idRef);
   await updateDoc(docRef, {
     password,
   });
+  return docRef;
 }

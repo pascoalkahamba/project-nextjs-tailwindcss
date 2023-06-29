@@ -8,13 +8,23 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useFetch } from "../hooks/useFetch";
 import { api } from "../config/axios";
+import { User } from "../model/User";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
 const LostPassword = () => {
   const {
-    global: { page, form, regex, setForm, setError, error, funHandleChange },
+    global: {
+      page,
+      form,
+      regex,
+      setForm,
+      setError,
+      error,
+      funHandleChange,
+      currentUser,
+    },
   } = useGlobalContext();
 
   const router = useRouter();
@@ -34,19 +44,30 @@ const LostPassword = () => {
     setError(false);
   }
 
-  function funUpdataUser(password: string) {
+  function funUpdataUser({ email, password, username }: User) {
     api.post("/users", {
+      username,
       password,
+      email,
     });
   }
 
   const funGoInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
-    if (errorPassword || errorUsername || !emailInvalid) {
+    if (
+      errorPassword ||
+      errorUsername ||
+      !emailInvalid ||
+      response === "email nao cadastrado"
+    ) {
       setError(true);
     } else {
       funCreatedAccount();
-      funUpdataUser(form.password);
+      funUpdataUser({
+        email: form.email,
+        password: form.password,
+        username: currentUser,
+      });
       router.push("/login");
     }
   };
