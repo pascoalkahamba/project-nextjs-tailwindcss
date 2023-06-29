@@ -13,7 +13,7 @@ type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
 const LostPassword = () => {
   const {
-    global: { page, form, regex, setError, error, funHandleChange },
+    global: { page, form, regex, setForm, setError, error, funHandleChange },
   } = useGlobalContext();
 
   const router = useRouter();
@@ -23,16 +23,23 @@ const LostPassword = () => {
   const errorPassword = funValidateInput(form.password);
   const emailInvalid = funEmailValidate(form.email, regex);
 
-  const funIntoAccount = () => {
-    router.push("/login");
-  };
+  function funCreatedAccount() {
+    setForm({
+      username: "",
+      password: "",
+      password2: "",
+      email: "",
+    });
+    setError(false);
+  }
 
   const funGoInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
     if (errorPassword || errorUsername || !emailInvalid) {
       setError(true);
     } else {
-      funIntoAccount();
+      funCreatedAccount();
+      router.push("/login");
     }
   };
 
@@ -80,9 +87,13 @@ const LostPassword = () => {
             ) : (
               response === "email nao cadastrado" &&
               error && (
-                <span className="block ml-3 italic text-red-500">
-                  Email não encontrado por favor faça o casdastro.
-                </span>
+                <Link href="/createAccount">
+                  <a onClick={funCreatedAccount}>
+                    <span className="block ml-3 italic text-red-500">
+                      Email não encontrado por favor faça o casdastro.
+                    </span>
+                  </a>
+                </Link>
               )
             )}
           </div>
