@@ -10,7 +10,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <section className="w-full h-screen text-black-100 font-serif flex flex-col">
       <Header />
-      {children}
+      <div className="flex-1 mt-[3.7rem] flex gap-7">{children}</div>
       <Footer />
     </section>
   );

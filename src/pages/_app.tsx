@@ -3,6 +3,7 @@ import Head from "next/head";
 import "../styles/global.css";
 import { ThemeProvider } from "next-themes";
 import { GlobalStorage } from "../components/globalStorage";
+import Layout from "../components/layout";
 
 export default function App(props: AppProps) {
   const { Component, pageProps } = props;
@@ -19,7 +20,9 @@ export default function App(props: AppProps) {
       </Head>
       <ThemeProvider enableSystem={true} attribute="class">
         <GlobalStorage>
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </GlobalStorage>
       </ThemeProvider>
     </>

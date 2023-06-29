@@ -8,7 +8,7 @@ const Sidebar = () => {
   } = useGlobalContext();
 
   return (
-    <section className="flex-1 mt-[3.7rem] ">
+    <section>
       <Head>
         <title>{page} inicial</title>
       </Head>
