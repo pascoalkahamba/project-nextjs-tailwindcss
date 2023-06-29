@@ -3,56 +3,36 @@ import Layout from "../components/layout";
 import Head from "next/head";
 import useGlobalContext from "../hooks/useGlobalContext";
 import Image from "next/image";
-import { funValidateInput } from "./createAccount";
+import { funEmailValidate, funValidateInput } from "./createAccount";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useFetch } from "../hooks/useFetch";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
 const LostPassword = () => {
-  const [form, setForm] = useState({ username: "", password: "" });
-  const [error, setError] = useState(false);
   const {
-    global: { page, user, setUser },
+    global: { page, form, regex, setError, error, funHandleChange },
   } = useGlobalContext();
 
   const router = useRouter();
+  const { response, loading } = useFetch(`/users?email=${form.email}`);
 
-  const handleChange: HandleChangeProps = ({ target }) => {
-    setForm({ ...form, [target.id]: target.value });
+  const errorUsername = funValidateInput(form.email);
+  const errorPassword = funValidateInput(form.password);
+  const emailInvalid = funEmailValidate(form.email, regex);
+
+  const funIntoAccount = () => {
+    router.push("/login");
   };
 
-  const errorUsername = funValidateInput<string>(form.username);
-  const errorPassword = funValidateInput<string>(form.password);
-  const thereIsUsername = user.some(
-    ({ username }) => username === form.username
-  );
-
-  const intoAccount = (username: boolean) => {
-    if (!username) setError(true);
-    else if (username) {
-      setError(false);
-      const newUser = user.map((user) => {
-        if (user.username === form.username)
-          return {
-            username: form.username,
-            password: form.password,
-            id: user.id,
-          };
-        else return user;
-      });
-      setUser(newUser);
-      router.push("/login");
-    }
-  };
-
-  const goInsideAccount: GoInsideAccountProps = (event) => {
+  const funGoInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
-    if (funValidateInput(form.password) || funValidateInput(form.username)) {
+    if (errorPassword || errorUsername || !emailInvalid) {
       setError(true);
     } else {
-      intoAccount(thereIsUsername);
+      funIntoAccount();
     }
   };
 
@@ -70,7 +50,7 @@ const LostPassword = () => {
           className="w-full"
         />
         <form
-          onSubmit={goInsideAccount}
+          onSubmit={funGoInsideAccount}
           className="flex flex-col gap-8 justify-center w-[50%]"
         >
           <h1 className="text-center font-bold text-3xl mt-5">
@@ -83,21 +63,25 @@ const LostPassword = () => {
             </label>
             <input
               type="text"
-              value={form.username}
-              onChange={handleChange}
-              id="username"
-              placeholder="input your username"
+              value={form.email}
+              onChange={funHandleChange}
+              id="email"
+              placeholder="input your email"
               className="rounded-lg w-[97%] transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
             {errorUsername && error ? (
               <span className="block ml-3 italic text-red-500">
                 Nome de usuário invalido.
               </span>
+            ) : !emailInvalid && error ? (
+              <span className="block ml-3 italic text-red-500">
+                Email invalido.
+              </span>
             ) : (
-              !thereIsUsername &&
+              response === "email nao cadastrado" &&
               error && (
                 <span className="block ml-3 italic text-red-500">
-                  Usuário não cadastrado.
+                  Email não encontrado por favor faça o casdastro.
                 </span>
               )
             )}
@@ -110,7 +94,7 @@ const LostPassword = () => {
             <input
               type="text"
               value={form.password}
-              onChange={handleChange}
+              onChange={funHandleChange}
               id="password"
               placeholder="input your password"
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"

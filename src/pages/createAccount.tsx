@@ -33,7 +33,7 @@ const CreateAccount = () => {
     },
   } = useGlobalContext();
 
-  const [response] = useFetch(`/users?email=${form.email}`);
+  const { response, loading } = useFetch(`/users?email=${form.email}`);
 
   function funAddUser({ email, password, username }: User) {
     api.post("/users", {
@@ -195,7 +195,7 @@ const CreateAccount = () => {
             type="submit"
             className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center mb-4"
           >
-            Criar Conta
+            {loading ? "Cadastrando..." : "Cadastrar"}
           </button>
         </form>
       </div>

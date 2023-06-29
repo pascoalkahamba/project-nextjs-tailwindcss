@@ -7,20 +7,45 @@ type ServerResponseProps =
   | "email nao cadastrado"
   | "password invalid";
 
+interface FetchProps {
+  status: ServerResponseProps;
+  username: string;
+}
+
 export function useFetch(url: string) {
-  const [state, setState] = useState<ServerResponseProps>(
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState<ServerResponseProps>(
     "email nao cadastrado"
   );
+
   const {
     global: { setCurrentUser },
   } = useGlobalContext();
 
-  api
-    .get<{ status: ServerResponseProps; username: string }>(url)
-    .then((response) => response.data)
-    .then((data) => {
-      setState(data.status), setCurrentUser(data.username);
-    });
+  useEffect(() => {
+    let isMounted = true;
 
-  return [state];
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await api.get<FetchProps>(url);
+        if (isMounted) {
+          setResponse(response.data.status);
+          setCurrentUser(response.data.username);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [url, setCurrentUser]);
+
+  return { response, loading, setLoading };
 }

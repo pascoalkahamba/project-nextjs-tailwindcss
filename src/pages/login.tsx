@@ -26,7 +26,7 @@ const Login = () => {
     },
   } = useGlobalContext();
 
-  const [response] = useFetch(
+  const { response, loading, setLoading } = useFetch(
     `/users?email=${form.email}&password=${form.password}`
   );
 
@@ -47,7 +47,6 @@ const Login = () => {
 
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.email);
-  // const emailInvalid = false;
   const emailInvalid = funEmailValidate(form.email, regex);
 
   console.log(currentUser);
@@ -63,7 +62,6 @@ const Login = () => {
     else {
       setLogin(true);
       router.push("/userProfile");
-      // funCreatedAccount();
     }
   };
 
@@ -160,7 +158,7 @@ const Login = () => {
             type="submit"
             className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center"
           >
-            Entrar
+            {loading ? "Carregando..." : "Entrar"}
           </button>
           <Link href="/lostPassword">
             <a>
