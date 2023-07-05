@@ -1,6 +1,6 @@
 import Head from "next/head";
 import useGlobalContext from "../hooks/useGlobalContext";
-import { LogInIcon, LogOutIcon } from "lucide-react";
+import { LogOutIcon, HomeIcon, NewspaperIcon } from "lucide-react";
 
 const UserProfile = () => {
   const {
@@ -14,9 +14,10 @@ const UserProfile = () => {
       </Head>
       <div className=" flex self-start w-full justify-around items-center mt-3 ">
         <p className="font-bold text-4xl">Minha Conta</p>
-        <div className="flex items-center gap-2 justify-between">
-          <LogOutIcon className="block cursor-pointer" />
-          <LogInIcon className="block cursor-pointer" />
+        <div className="flex items-center gap-3 justify-between">
+          <HomeIcon className="block  cursor-pointer p-[1px] dark:hover:bg-slate-700 transition-all rounded-md  hover:bg-slate-200" />
+          <NewspaperIcon className="block  cursor-pointer p-[1px] dark:hover:bg-slate-700 transition-all rounded-md  hover:bg-slate-200" />
+          <LogOutIcon className="block  cursor-pointer p-[1px] dark:hover:bg-slate-700 transition-all rounded-md hover:bg-slate-200" />
         </div>
       </div>
     </>

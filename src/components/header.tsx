@@ -10,20 +10,11 @@ const Header = () => {
 
   const currentTheme = theme === "system" ? systemTheme : theme;
   const {
-    global: { login, currentUser, setLogin, setForm, setError },
+    global: { login, currentUser, setLogin, setError },
   } = useGlobalContext();
 
   function funOutLogin() {
-    if (login) {
-      setForm({
-        username: "",
-        password: "",
-        password2: "",
-        email: "",
-      });
-      setLogin(false);
-      setError(false);
-    }
+    if (login) setError(false);
   }
   return (
     <header className="w-full h-[60px] text-white bg-slate-900 dark:bg-slate-600 p-1 fixed z-[1000] flex justify-between items-center">
