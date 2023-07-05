@@ -14,15 +14,19 @@ type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandleChangeProps = React.ChangeEventHandler<HTMLInputElement> | undefined;
 
 const LostPassword = () => {
+  const [form, setForm] = useState({
+    password: "",
+    email: "",
+  });
   const {
     global: {
       page,
-      form,
+
       regex,
-      setForm,
+
       setError,
       error,
-      funHandleChange,
+
       currentUser,
     },
   } = useGlobalContext();
@@ -34,11 +38,13 @@ const LostPassword = () => {
   const errorPassword = funValidateInput(form.password);
   const emailInvalid = funEmailValidate(form.email, regex);
 
+  const funHandleChange: HandleChangeProps = ({ target }) => {
+    setForm({ ...form, [target.id]: target.value });
+  };
+
   function funCreatedAccount() {
     setForm({
-      username: "",
       password: "",
-      password2: "",
       email: "",
     });
     setError(false);

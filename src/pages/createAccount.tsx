@@ -9,6 +9,9 @@ import { User } from "../model/User";
 import { useFetch } from "../hooks/useFetch";
 
 type CreateAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
+export type HandleChangeProps =
+  | React.ChangeEventHandler<HTMLInputElement>
+  | undefined;
 
 export function funValidateInput(username: string) {
   return username === "" || (!Number.isNaN(+username) && true);
@@ -19,18 +22,14 @@ export function funEmailValidate(email: string, regex: RegExp) {
 }
 
 const CreateAccount = () => {
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+    password2: "",
+    email: "",
+  });
   const {
-    global: {
-      regex,
-      form,
-      setForm,
-      page,
-      setCurrentUser,
-      funHandleChange,
-      currentUser,
-      error,
-      setError,
-    },
+    global: { regex, page, error, setError },
   } = useGlobalContext();
 
   const { response, loading } = useFetch(`/users?email=${form.email}`);
@@ -49,6 +48,10 @@ const CreateAccount = () => {
   const errorPassword = funValidateInput(form.password);
   const errorPassword2 = funValidateInput(form.password2);
   const emailRegex = funEmailValidate(form.email, regex);
+
+  const funHandleChange: HandleChangeProps = ({ target }) => {
+    setForm({ ...form, [target.id]: target.value });
+  };
 
   const funCreateAccount: CreateAccountProps = (event) => {
     event.preventDefault();

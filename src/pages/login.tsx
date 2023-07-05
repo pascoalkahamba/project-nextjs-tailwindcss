@@ -1,31 +1,26 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect } from "react";
+import { useState } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
-import { funEmailValidate, funValidateInput } from "./createAccount";
+import {
+  HandleChangeProps,
+  funEmailValidate,
+  funValidateInput,
+} from "./createAccount";
 import Link from "next/link";
-import Layout from "../components/layout";
 import { useRouter } from "next/router";
-import { api } from "../config/axios";
 import { useFetch } from "../hooks/useFetch";
 
 type GoInsideAccountProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
 const Login = () => {
+  const [form, setForm] = useState({
+    password: "",
+    email: "",
+  });
   const {
-    global: {
-      page,
-      setLogin,
-      currentUser,
-      regex,
-      error,
-      form,
-      setForm,
-      setError,
-      funHandleChange,
-    },
+    global: { page, setLogin, currentUser, regex, error, setError },
   } = useGlobalContext();
-
   const { response, loading, setLoading } = useFetch(
     `/users?email=${form.email}&password=${form.password}`
   );
@@ -37,9 +32,7 @@ const Login = () => {
   const router = useRouter();
   function funCreatedAccount() {
     setForm({
-      username: "",
       password: "",
-      password2: "",
       email: "",
     });
     setError(false);
@@ -48,6 +41,10 @@ const Login = () => {
   const errorPassword = funValidateInput(form.password);
   const errorUsername = funValidateInput(form.email);
   const emailInvalid = funEmailValidate(form.email, regex);
+
+  const funHandleChange: HandleChangeProps = ({ target }) => {
+    setForm({ ...form, [target.id]: target.value });
+  };
 
   console.log(currentUser);
 
@@ -62,6 +59,7 @@ const Login = () => {
     else {
       setLogin(true);
       router.push("/userProfile");
+      funCreatedAccount();
     }
   };
 
@@ -169,10 +167,7 @@ const Login = () => {
         <h2 className="text-2xl font-bold mt-4">Cadastre-se</h2>
         <p>Ainda não possui conta? Cadastre-se no site.</p>
         <Link href="/createAccount">
-          <button
-            onClick={funCreatedAccount}
-            className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center mb-4"
-          >
+          <button className="bg-slate-900 dark:bg-slate-600 p-3 text-slate-100 w-[50%] rounded-lg self-center mb-4">
             Cadastra-se
           </button>
         </Link>
