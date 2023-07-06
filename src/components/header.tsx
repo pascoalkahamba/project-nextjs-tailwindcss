@@ -13,9 +13,6 @@ const Header = () => {
     global: { login, currentUser, setLogin, setError },
   } = useGlobalContext();
 
-  function funOutLogin() {
-    if (login) setError(false);
-  }
   return (
     <header className="w-full h-[60px] text-white bg-slate-900 dark:bg-slate-600 p-1 fixed z-[1000] flex justify-between items-center">
       <Link href="/">
@@ -30,14 +27,9 @@ const Header = () => {
         </a>
       </Link>
       <div className="flex gap-1">
-        <Link href="/login" target="_blank">
-          <a className="flex gap-2 items-center" onClick={funOutLogin}>
+        <Link href={`${login ? "/userProfile" : "/login"}`} target="_blank">
+          <a className="flex gap-2 items-center">
             <p className="text-lg"> {login ? currentUser : "Login"}</p>
-            {login ? (
-              <LogOutIcon className="block cursor-pointer" />
-            ) : (
-              <LogInIcon className="block cursor-pointer" />
-            )}
           </a>
         </Link>
       </div>
