@@ -26,7 +26,7 @@ const Button = ({ name }: ButtonProps) => {
   return (
     <button
       onClick={funOutLogin}
-      className="w-17 p-2 rounded-xl bg-blue-700 text-dark-300 cursor-pointer"
+      className="w-17 p-2 rounded-xl bg-blue-900 cursor-pointer"
     >
       {name}
     </button>

@@ -12,7 +12,7 @@ const Modal = ({ typeModal }: ModalProps) => {
   } = useGlobalContext();
   return (
     <section className="fixed w-full h-full flex justify-center items-center z-[1000]">
-      <div className=" p-3 rounded-lg bg-slate-200 text-black flex flex-col gap-3 mb-40">
+      <div className=" p-3 rounded-lg bg-slate-900 dark:bg-slate-600 text-slate-50 flex flex-col gap-3 mb-52">
         <p className="text-[16px]">
           Você tem certeza que deseja terminar a sessão?
         </p>

@@ -1,11 +1,6 @@
 import Head from "next/head";
 import useGlobalContext from "../hooks/useGlobalContext";
-import {
-  LogOutIcon,
-  HomeIcon,
-  NewspaperIcon,
-  MoreHorizontal,
-} from "lucide-react";
+import { LogOutIcon, HomeIcon, NewspaperIcon } from "lucide-react";
 import Modal from "../components/modal";
 
 const UserProfile = () => {
