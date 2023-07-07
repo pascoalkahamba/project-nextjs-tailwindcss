@@ -8,7 +8,9 @@ interface ContextProps {
   currentUser: string;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   error: boolean;
+  modal: boolean;
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
   login: boolean;
   setCurrentUser: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -25,7 +27,7 @@ export const globalContext = createContext<ContextProps | null>(null);
 
 export const GlobalStorage = ({ children }: GlobalStorageProps) => {
   const [currentUser, setCurrentUser] = useState("");
-
+  const [modal, setModal] = useState(false);
   const [error, setError] = useState(false);
   const [login, setLogin] = useState(false);
 
@@ -38,6 +40,8 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
       value={{
         error: error,
         login: login,
+        modal: modal,
+        setModal: setModal,
         setLogin: setLogin,
         setError: setError,
         page: "Página",

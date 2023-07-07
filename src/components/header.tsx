@@ -29,7 +29,7 @@ const Header = () => {
       <div className="flex gap-1">
         <Link href={`${login ? "/userProfile" : "/login"}`} target="_blank">
           <a className="flex gap-2 items-center">
-            <p className="text-lg"> {login ? currentUser : "Login"}</p>
+            <p className="text-lg"> {login ? currentUser : "Fazer login"}</p>
           </a>
         </Link>
       </div>

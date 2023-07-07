@@ -6,15 +6,12 @@ import {
   NewspaperIcon,
   MoreHorizontal,
 } from "lucide-react";
+import Modal from "../components/modal";
 
 const UserProfile = () => {
   const {
-    global: { currentUser, page, setCurrentUser, setLogin, login },
+    global: { currentUser, page, setCurrentUser, setModal, login, modal },
   } = useGlobalContext();
-
-  function funOutLogin() {
-    if (login) setLogin(false);
-  }
 
   return (
     <>
@@ -27,11 +24,12 @@ const UserProfile = () => {
           <HomeIcon className="block  cursor-pointer p-[1px] dark:hover:bg-slate-700 transition-all rounded-md  hover:bg-slate-200" />
           <NewspaperIcon className="block  cursor-pointer p-[1px] dark:hover:bg-slate-700 transition-all rounded-md  hover:bg-slate-200" />
           <LogOutIcon
-            onClick={funOutLogin}
-            className="block  cursor-pointer p-[1px] dark:hover:bg-slate-700 transition-all rounded-md hover:bg-slate-200"
+            onClick={() => setModal(true)}
+            className="block cursor-pointer p-[1px] dark:hover:bg-slate-700 transition-all rounded-md hover:bg-slate-200"
           />
         </div>
       </div>
+      {modal && <Modal typeModal="outLogin" />}
     </>
   );
 };
