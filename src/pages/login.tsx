@@ -18,6 +18,7 @@ const Login = () => {
     password: "",
     email: "",
   });
+
   const {
     global: { page, setLogin, currentUser, regex, error, setError },
   } = useGlobalContext();
@@ -48,20 +49,20 @@ const Login = () => {
 
   console.log(currentUser);
 
-  const funIntoAccount = (
-    email: boolean,
-    password: boolean,
-    username: boolean
-  ) => {
-    if (username) setError(true);
-    if (!email) setError(true);
-    if (password) setError(true);
-    else {
-      setLogin(true);
-      router.push("/userProfile");
-      funCreatedAccount();
-    }
-  };
+  // const funIntoAccount = (
+  //   email: boolean,
+  //   password: boolean,
+  //   username: boolean
+  // ) => {
+  //   if (username) setError(true);
+  //   if (!email) setError(true);
+  //   if (password) setError(true);
+  //   else {
+  //     setLogin(true);
+  //     router.push("/userProfile");
+  //     funCreatedAccount();
+  //   }
+  // };
 
   const funGoInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
@@ -74,7 +75,9 @@ const Login = () => {
       setError(true);
     } else {
       console.log("Perfil do usuario acessado.");
-      funIntoAccount(emailInvalid, errorPassword, errorUsername);
+      // funIntoAccount(emailInvalid, errorPassword, errorUsername);
+      router.push("/userProfile");
+      funCreatedAccount();
     }
   };
 
