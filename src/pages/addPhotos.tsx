@@ -39,7 +39,7 @@ const AddPhotos = () => {
         <div className="flex flex-col gap-2">
           <div>
             <label htmlFor="name" className="ml-3">
-              Senha
+              Nome
             </label>
             <input
               type="text"
@@ -50,7 +50,7 @@ const AddPhotos = () => {
           </div>{" "}
           <div>
             <label htmlFor="heavy" className="ml-3">
-              Senha
+              Peso
             </label>
             <input
               type="number"
@@ -75,7 +75,7 @@ const AddPhotos = () => {
             Adicionar
           </button>
         </div>
-        <div className="bg-slate-400 rounded-md ">
+        <div className="bg-slate-400 rounded-md">
           <p>Image</p>
         </div>
       </form>
