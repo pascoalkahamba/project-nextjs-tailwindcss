@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { HomeIcon, NewspaperIcon, LogOutIcon } from "lucide-react";
 import Modal from "../components/modal";
 import Button from "../components/button";
+import { HandleChangeProps } from "./createAccount";
+
+type FunAddPhotosProps = React.FormEventHandler<HTMLFormElement> | undefined;
 
 const AddPhotos = () => {
+  const [form, setForm] = useState({ name: "", weight: 0, age: 0 });
   const {
     global: { currentUser, page, setCurrentUser, setModal, login, modal },
   } = useGlobalContext();
+
+  const funHandleChange: HandleChangeProps = ({ target }) => {
+    setForm({ ...form, [target.id]: target.value });
+  };
+
+  const funAddPhotos: FunAddPhotosProps = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <section className="flex  flex-col w-full gap-2 mt-3">
@@ -35,7 +47,10 @@ const AddPhotos = () => {
       </div>
       {modal && <Modal typeModal="outLogin" />}
 
-      <form className="flex  gap-5 justify-around w-full items-center">
+      <form
+        className="flex  gap-5 justify-around w-full items-center"
+        onSubmit={funAddPhotos}
+      >
         <div className="flex flex-col gap-2">
           <div>
             <label htmlFor="name" className="ml-3">
@@ -44,17 +59,21 @@ const AddPhotos = () => {
             <input
               type="text"
               minLength={6}
+              onChange={funHandleChange}
+              value={form.name}
               id="name"
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
           </div>{" "}
           <div>
-            <label htmlFor="heavy" className="ml-3">
+            <label htmlFor="weight" className="ml-3">
               Peso
             </label>
             <input
               type="number"
-              id="heavy"
+              id="weight"
+              onChange={funHandleChange}
+              value={form.weight}
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
           </div>{" "}
@@ -65,13 +84,18 @@ const AddPhotos = () => {
             <input
               type="number"
               id="age"
+              onChange={funHandleChange}
+              value={form.age}
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
           </div>
           <div>
             <input type="file" className="cursor-pointer" />
           </div>
-          <button className="w-17 p-2 rounded-xl bg-blue-900 cursor-pointer self-start mb-2">
+          <button
+            type="submit"
+            className="w-17 p-2 rounded-xl bg-blue-900 cursor-pointer self-start mb-2"
+          >
             Adicionar
           </button>
         </div>

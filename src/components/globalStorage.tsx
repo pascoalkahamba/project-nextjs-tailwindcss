@@ -9,6 +9,8 @@ interface ContextProps {
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   error: boolean;
   modal: boolean;
+  infoDogs: InfoDogsProps[];
+  setInfoDogs: React.Dispatch<React.SetStateAction<InfoDogsProps[]>>;
   setLogin: React.Dispatch<React.SetStateAction<boolean>>;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
   login: boolean;
@@ -20,6 +22,12 @@ export interface UserProps<T> {
   id: number;
 }
 
+interface InfoDogsProps {
+  name: string;
+  weight: number;
+  age: number;
+}
+
 interface GlobalStorageProps {
   children: ReactNode;
 }
@@ -27,6 +35,7 @@ export const globalContext = createContext<ContextProps | null>(null);
 
 export const GlobalStorage = ({ children }: GlobalStorageProps) => {
   const [currentUser, setCurrentUser] = useState("");
+  const [infoDogs, setInfoDogs] = useState<InfoDogsProps[]>([]);
   const [modal, setModal] = useState(false);
   const [error, setError] = useState(false);
   const [login, setLogin] = useState(false);
@@ -39,6 +48,8 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
     <globalContext.Provider
       value={{
         error: error,
+        infoDogs: infoDogs,
+        setInfoDogs: setInfoDogs,
         login: login,
         modal: modal,
         setModal: setModal,
