@@ -1,27 +1,56 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { HomeIcon, NewspaperIcon, LogOutIcon } from "lucide-react";
 import Modal from "../components/modal";
 import Button from "../components/button";
 import { HandleChangeProps } from "./createAccount";
 
-type FunAddPhotosProps = React.FormEventHandler<HTMLFormElement> | undefined;
+type AddPhotosProps = React.FormEventHandler<HTMLFormElement> | undefined;
+type HandlePictureChangeProps =
+  | React.ChangeEventHandler<HTMLInputElement>
+  | undefined;
+
+interface PictureProps {
+  preview: string;
+  raw: File;
+}
 
 const AddPhotos = () => {
-  const [form, setForm] = useState({ name: "", weight: 0, age: 0 });
+  const [form, setForm] = useState({
+    name: "",
+    weight: 0,
+    age: 0,
+  });
+  const [picture, setPicture] = useState<PictureProps | null>(null);
   const {
     global: { currentUser, page, setCurrentUser, setModal, login, modal },
   } = useGlobalContext();
 
-  const funHandleChange: HandleChangeProps = ({ target }) => {
+  const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
 
-  const funAddPhotos: FunAddPhotosProps = (event) => {
+  const handlePictureChange: HandlePictureChangeProps = ({ target }) => {
+    const file: File = (target.files && target.files[0]) as File;
+
+    if (file) {
+      const url: string = URL.createObjectURL(file);
+
+      setPicture({
+        preview: url,
+        raw: file,
+      });
+    }
+  };
+
+  const addPhotos: AddPhotosProps = (event) => {
     event.preventDefault();
   };
+  console.log(form);
+  console.log(picture);
 
   return (
     <section className="flex  flex-col w-full gap-2 mt-3">
@@ -48,8 +77,8 @@ const AddPhotos = () => {
       {modal && <Modal typeModal="outLogin" />}
 
       <form
-        className="flex  gap-5 justify-around w-full items-center"
-        onSubmit={funAddPhotos}
+        className="flex justify-evenly w-full items-center mb-3"
+        onSubmit={addPhotos}
       >
         <div className="flex flex-col gap-2">
           <div>
@@ -59,7 +88,7 @@ const AddPhotos = () => {
             <input
               type="text"
               minLength={6}
-              onChange={funHandleChange}
+              onChange={handleChange}
               value={form.name}
               id="name"
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
@@ -72,7 +101,7 @@ const AddPhotos = () => {
             <input
               type="number"
               id="weight"
-              onChange={funHandleChange}
+              onChange={handleChange}
               value={form.weight}
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
@@ -84,13 +113,17 @@ const AddPhotos = () => {
             <input
               type="number"
               id="age"
-              onChange={funHandleChange}
+              onChange={handleChange}
               value={form.age}
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
           </div>
           <div>
-            <input type="file" className="cursor-pointer" />
+            <input
+              type="file"
+              className="cursor-pointer"
+              onChange={handlePictureChange}
+            />
           </div>
           <button
             type="submit"
@@ -99,9 +132,13 @@ const AddPhotos = () => {
             Adicionar
           </button>
         </div>
-        <div className="bg-slate-400 rounded-md">
-          <p>Image</p>
-        </div>
+
+        <div
+          style={{
+            backgroundImage: `url("${picture?.preview && picture?.preview}")`,
+          }}
+          className="rounded-md bg-cover bg-center w-[45%] h-[98%]"
+        ></div>
       </form>
     </section>
   );
