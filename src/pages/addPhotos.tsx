@@ -7,6 +7,7 @@ import { HomeIcon, NewspaperIcon, LogOutIcon } from "lucide-react";
 import Modal from "../components/modal";
 import Button from "../components/button";
 import { HandleChangeProps, validateInput } from "./createAccount";
+import { useRouter } from "next/router";
 
 type AddPhotosProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandlePictureChangeProps =
@@ -26,8 +27,10 @@ const AddPhotos = () => {
   });
   const [picture, setPicture] = useState<PictureProps | null>(null);
   const {
-    global: { currentUser, page, setError, setModal, login, modal, error },
+    global: { page, setError, setModal, modal, error },
   } = useGlobalContext();
+
+  const regex = /^\d+$/;
 
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
@@ -36,11 +39,11 @@ const AddPhotos = () => {
   function isNumber(number: number, regex: RegExp) {
     return regex.test(`${number}`);
   }
-  const regex = /^\d+$/;
 
   const name = validateInput(form.name);
   const age = isNumber(form.age, regex);
   const weight = isNumber(form.weight, regex);
+  const router = useRouter();
 
   const handlePictureChange: HandlePictureChangeProps = ({ target }) => {
     const file: File = (target.files && target.files[0]) as File;
@@ -55,9 +58,18 @@ const AddPhotos = () => {
     }
   };
 
+  function sendData() {}
+
   const addPhotos: AddPhotosProps = (event) => {
     event.preventDefault();
-    setError(true);
+    if (name || !age || !weight) {
+      setError(true);
+    } else {
+      setError(false);
+      sendData();
+      router.push("/userProfile");
+      alert("Dados enviados com sucesso!");
+    }
   };
   console.log(form);
   console.log(picture);
@@ -97,7 +109,7 @@ const AddPhotos = () => {
             </label>
             <input
               type="text"
-              minLength={6}
+              minLength={3}
               onChange={handleChange}
               value={form.name}
               id="name"
