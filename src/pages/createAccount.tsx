@@ -13,11 +13,11 @@ export type HandleChangeProps =
   | React.ChangeEventHandler<HTMLInputElement>
   | undefined;
 
-export function funValidateInput(username: string) {
+export function validateInput(username: string) {
   return username === "" || (!Number.isNaN(+username) && true);
 }
 
-export function funEmailValidate(email: string, regex: RegExp) {
+export function emailValidate(email: string, regex: RegExp) {
   return regex.test(email);
 }
 
@@ -43,11 +43,11 @@ const CreateAccount = () => {
   }
 
   const router = useRouter();
-  const errorUsername = funValidateInput(form.username);
-  const errorEmail = funValidateInput(form.email);
-  const errorPassword = funValidateInput(form.password);
-  const errorPassword2 = funValidateInput(form.password2);
-  const emailRegex = funEmailValidate(form.email, regex);
+  const errorUsername = validateInput(form.username);
+  const errorEmail = validateInput(form.email);
+  const errorPassword = validateInput(form.password);
+  const errorPassword2 = validateInput(form.password2);
+  const emailRegex = emailValidate(form.email, regex);
 
   const funHandleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });

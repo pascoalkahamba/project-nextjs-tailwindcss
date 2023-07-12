@@ -4,8 +4,8 @@ import { useState } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import {
   HandleChangeProps,
-  funEmailValidate,
-  funValidateInput,
+  emailValidate,
+  validateInput,
 } from "./createAccount";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -39,11 +39,11 @@ const Login = () => {
     setError(false);
   }
 
-  const errorPassword = funValidateInput(form.password);
-  const errorUsername = funValidateInput(form.email);
-  const emailInvalid = funEmailValidate(form.email, regex);
+  const errorPassword = validateInput(form.password);
+  const errorUsername = validateInput(form.email);
+  const emailInvalid = emailValidate(form.email, regex);
 
-  const funHandleChange: HandleChangeProps = ({ target }) => {
+  const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
 
@@ -107,7 +107,7 @@ const Login = () => {
           <input
             type="email"
             value={form.email}
-            onChange={funHandleChange}
+            onChange={handleChange}
             id="email"
             placeholder="input your email"
             className="rounded-lg w-[97%] transition-all outline-0 hover:border-[2.5px] hover:border-blue-600 focus:border-blue-600 text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
@@ -138,7 +138,7 @@ const Login = () => {
             type="password"
             value={form.password}
             minLength={6}
-            onChange={funHandleChange}
+            onChange={handleChange}
             id="password"
             placeholder="input your password"
             className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"

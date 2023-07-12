@@ -6,7 +6,7 @@ import useGlobalContext from "../hooks/useGlobalContext";
 import { HomeIcon, NewspaperIcon, LogOutIcon } from "lucide-react";
 import Modal from "../components/modal";
 import Button from "../components/button";
-import { HandleChangeProps } from "./createAccount";
+import { HandleChangeProps, validateInput } from "./createAccount";
 
 type AddPhotosProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandlePictureChangeProps =
@@ -26,12 +26,21 @@ const AddPhotos = () => {
   });
   const [picture, setPicture] = useState<PictureProps | null>(null);
   const {
-    global: { currentUser, page, setCurrentUser, setModal, login, modal },
+    global: { currentUser, page, setError, setModal, login, modal, error },
   } = useGlobalContext();
 
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
+
+  function isNumber(number: number, regex: RegExp) {
+    return regex.test(`${number}`);
+  }
+  const regex = /^\d+$/;
+
+  const name = validateInput(form.name);
+  const age = isNumber(form.age, regex);
+  const weight = isNumber(form.weight, regex);
 
   const handlePictureChange: HandlePictureChangeProps = ({ target }) => {
     const file: File = (target.files && target.files[0]) as File;
@@ -48,6 +57,7 @@ const AddPhotos = () => {
 
   const addPhotos: AddPhotosProps = (event) => {
     event.preventDefault();
+    setError(true);
   };
   console.log(form);
   console.log(picture);
@@ -93,6 +103,11 @@ const AddPhotos = () => {
               id="name"
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
+            {name && error && (
+              <span className="block ml-3 italic text-red-500">
+                Nome invalido.
+              </span>
+            )}
           </div>{" "}
           <div>
             <label htmlFor="weight" className="ml-3">
@@ -105,6 +120,11 @@ const AddPhotos = () => {
               value={form.weight}
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
+            {!weight && error && (
+              <span className="block ml-3 italic text-red-500">
+                Digete um numero.
+              </span>
+            )}
           </div>{" "}
           <div>
             <label htmlFor="age" className="ml-3">
@@ -117,6 +137,11 @@ const AddPhotos = () => {
               value={form.age}
               className="rounded-lg outline-none transition-all outline-0 hover:border-[2.5px] hover:border-blue-600  focus:border-blue-600 w-[97%] text-black p-3 bg-black/10 dark:bg-slate-100 border-transparent"
             />
+            {!age && error && (
+              <span className="block ml-3 italic text-red-500">
+                Digete um numero.
+              </span>
+            )}
           </div>
           <div>
             <input
