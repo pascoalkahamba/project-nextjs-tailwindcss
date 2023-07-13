@@ -1,5 +1,7 @@
-import { User } from "../model/User";
-import { firestore } from "../config/firebase";
+import { PictureProps, User } from "../model/User";
+import { firestore, storage } from "../config/firebase";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+
 import {
   collection,
   addDoc,
@@ -33,4 +35,11 @@ export async function funUpDataUser(password: string, idRef: string) {
     password,
   });
   return docRef;
+}
+
+export async function sendPhotos({ preview, file }: PictureProps) {
+  const storageRef = ref(storage, preview);
+
+  // 'file' comes from the Blob or File API
+  await uploadBytes(storageRef, file);
 }

@@ -8,16 +8,13 @@ import Modal from "../components/modal";
 import Button from "../components/button";
 import { HandleChangeProps, validateInput } from "./createAccount";
 import { useRouter } from "next/router";
+import { api } from "../config/axios";
+import { PictureProps } from "../model/User";
 
 type AddPhotosProps = React.FormEventHandler<HTMLFormElement> | undefined;
 type HandlePictureChangeProps =
   | React.ChangeEventHandler<HTMLInputElement>
   | undefined;
-
-interface PictureProps {
-  preview: string;
-  raw: File;
-}
 
 const AddPhotos = () => {
   const [form, setForm] = useState({
@@ -53,12 +50,17 @@ const AddPhotos = () => {
 
       setPicture({
         preview: url,
-        raw: file,
+        file: file,
       });
     }
   };
 
-  function sendData() {}
+  function sendData({ preview, file }: PictureProps) {
+    api.post("/users/sendPhoto", {
+      preview,
+      file,
+    });
+  }
 
   const addPhotos: AddPhotosProps = (event) => {
     event.preventDefault();
@@ -66,7 +68,10 @@ const AddPhotos = () => {
       setError(true);
     } else {
       setError(false);
-      sendData();
+      setForm({ name: "", weight: 0, age: 0 });
+      // setPicture(null);
+      if (picture?.preview)
+        sendData({ preview: picture?.preview, file: picture?.file });
       router.push("/userProfile");
       alert("Dados enviados com sucesso!");
     }
