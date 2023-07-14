@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -34,13 +34,13 @@ const CreateAccount = () => {
 
   const { response, loading } = useFetch(`/users?email=${form.email}`);
 
-  function funAddUser({ email, password, username }: User) {
+  const addUser = useCallback(({ email, password, username }: User) => {
     api.post("/users", {
       username,
       password,
       email,
     });
-  }
+  }, []);
 
   const router = useRouter();
   const errorUsername = validateInput(form.username);
@@ -64,7 +64,7 @@ const CreateAccount = () => {
     ) {
       setError(true);
     } else {
-      funAddUser({
+      addUser({
         email: form.email,
         password: form.password,
         username: form.username,

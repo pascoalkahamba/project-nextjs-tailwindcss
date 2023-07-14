@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
@@ -55,15 +55,23 @@ const AddPhotos = () => {
     }
   };
 
-  function sendData({ preview, file }: PictureProps) {
+  const sendData = useCallback(({ preview, file }: PictureProps) => {
     api.post("/users/sendPhoto", {
       preview,
       file,
     });
-  }
+  }, []);
+
+  const callBackExemple = useCallback(
+    (name: string) => {
+      console.log(`Hello everyone my name is ${name} and last is ${form.age}`);
+    },
+    [form.age]
+  );
 
   const addPhotos: AddPhotosProps = (event) => {
     event.preventDefault();
+    callBackExemple(form.name);
     if (name || !age || !weight) {
       setError(true);
     } else {

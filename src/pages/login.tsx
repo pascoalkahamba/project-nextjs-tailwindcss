@@ -31,7 +31,7 @@ const Login = () => {
   console.log("response", response);
 
   const router = useRouter();
-  function funCreatedAccount() {
+  function createdAccount() {
     setForm({
       password: "",
       email: "",
@@ -60,11 +60,11 @@ const Login = () => {
   //   else {
   //     setLogin(true);
   //     router.push("/userProfile");
-  //     funCreatedAccount();
+  //     createdAccount();
   //   }
   // };
 
-  const funGoInsideAccount: GoInsideAccountProps = (event) => {
+  const goInsideAccount: GoInsideAccountProps = (event) => {
     event.preventDefault();
     if (
       errorPassword ||
@@ -77,7 +77,7 @@ const Login = () => {
       console.log("Perfil do usuario acessado.");
       // funIntoAccount(emailInvalid, errorPassword, errorUsername);
       router.push("/userProfile");
-      funCreatedAccount();
+      createdAccount();
     }
   };
 
@@ -95,7 +95,7 @@ const Login = () => {
       />
 
       <form
-        onSubmit={funGoInsideAccount}
+        onSubmit={goInsideAccount}
         className="flex flex-col gap-8 justify-center w-[50%]"
       >
         <h1 className=" text-center font-bold text-3xl mt-5">Conecte-se</h1>
@@ -163,7 +163,7 @@ const Login = () => {
           {loading ? "Carregando..." : "Entrar"}
         </button>
         <Link href="/lostPassword">
-          <a onClick={funCreatedAccount}>
+          <a onClick={createdAccount}>
             <h2 className="text-xl font-medium underline">Perdeu a Senha?</h2>
           </a>
         </Link>
