@@ -3,7 +3,6 @@ import { useState, useCallback } from "react";
 import useGlobalContext from "../hooks/useGlobalContext";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Layout from "../components/layout";
 import { api } from "../config/axios";
 import { User } from "../model/User";
 import { useFetch } from "../hooks/useFetch";
@@ -53,7 +52,7 @@ const CreateAccount = () => {
     setForm({ ...form, [target.id]: target.value });
   };
 
-  const funCreateAccount: CreateAccountProps = (event) => {
+  const createAccount: CreateAccountProps = (event) => {
     event.preventDefault();
     if (
       errorUsername ||
@@ -90,7 +89,7 @@ const CreateAccount = () => {
       />
 
       <form
-        onSubmit={funCreateAccount}
+        onSubmit={createAccount}
         className="flex flex-col gap-6 justify-center w-[50%]"
       >
         <h1 className=" text-center font-bold text-3xl mt-5">Cadastre-se</h1>

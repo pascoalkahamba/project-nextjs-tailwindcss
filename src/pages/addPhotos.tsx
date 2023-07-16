@@ -1,12 +1,10 @@
 import React, { useCallback, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
-import useGlobalContext from "../hooks/useGlobalContext";
+ import useGlobalContext from "../hooks/useGlobalContext";
 import { HomeIcon, NewspaperIcon, LogOutIcon } from "lucide-react";
 import Modal from "../components/modal";
-import Button from "../components/button";
-import { HandleChangeProps, validateInput } from "./createAccount";
+ import { HandleChangeProps, validateInput } from "./createAccount";
 import { useRouter } from "next/router";
 import { api } from "../config/axios";
 import { PictureProps } from "../model/User";
@@ -61,18 +59,11 @@ const AddPhotos = () => {
       file,
     });
   }, []);
-
-  const callBackExemple = useCallback(
-    (name: string) => {
-      console.log(`Hello everyone my name is ${name} and last is ${form.age}`);
-    },
-    [form.age]
-  );
+ 
 
   const addPhotos: AddPhotosProps = (event) => {
     event.preventDefault();
-    callBackExemple(form.name);
-    if (name || !age || !weight) {
+     if (name || !age || !weight) {
       setError(true);
     } else {
       setError(false);
