@@ -3,7 +3,7 @@ import Layout from "../components/layout";
 import Head from "next/head";
 import useGlobalContext from "../hooks/useGlobalContext";
 import Image from "next/image";
-import { funEmailValidate, funValidateInput } from "./createAccount";
+import { emailValidate, validateInput } from "./createAccount";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useFetch } from "../hooks/useFetch";
@@ -19,24 +19,15 @@ const LostPassword = () => {
     email: "",
   });
   const {
-    global: {
-      page,
-
-      regex,
-
-      setError,
-      error,
-
-      currentUser,
-    },
+    global: { page, regexEmail, setError, error, currentUser },
   } = useGlobalContext();
 
   const router = useRouter();
   const { response, loading } = useFetch(`/users?email=${form.email}`);
 
-  const errorUsername = funValidateInput(form.email);
-  const errorPassword = funValidateInput(form.password);
-  const emailInvalid = funEmailValidate(form.email, regex);
+  const errorUsername = validateInput(form.email);
+  const errorPassword = validateInput(form.password);
+  const emailInvalid = emailValidate(form.email, regexEmail);
 
   const funHandleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
@@ -88,7 +79,7 @@ const LostPassword = () => {
         width={500}
         height={300}
         alt="picture for login"
-        className="w-full"
+        className="w-full animeLeft"
       />
       <form
         onSubmit={funGoInsideAccount}

@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
- import useGlobalContext from "../hooks/useGlobalContext";
+import useGlobalContext from "../hooks/useGlobalContext";
 import { HomeIcon, NewspaperIcon, LogOutIcon } from "lucide-react";
 import Modal from "../components/modal";
- import { HandleChangeProps, validateInput } from "./createAccount";
+import { HandleChangeProps, validateInput } from "./createAccount";
 import { useRouter } from "next/router";
 import { api } from "../config/axios";
 import { PictureProps } from "../model/User";
@@ -25,19 +25,19 @@ const AddPhotos = () => {
     global: { page, setError, setModal, modal, error },
   } = useGlobalContext();
 
-  const regex = /^\d+$/;
+  const REGEX_NUMBER = /^\d+$/;
 
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
   };
 
-  function isNumber(number: number, regex: RegExp) {
-    return regex.test(`${number}`);
+  function isNumber(number: number, regexNumber: RegExp) {
+    return regexNumber.test(`${number}`);
   }
 
   const name = validateInput(form.name);
-  const age = isNumber(form.age, regex);
-  const weight = isNumber(form.weight, regex);
+  const age = isNumber(form.age, REGEX_NUMBER);
+  const weight = isNumber(form.weight, REGEX_NUMBER);
   const router = useRouter();
 
   const handlePictureChange: HandlePictureChangeProps = ({ target }) => {
@@ -59,11 +59,10 @@ const AddPhotos = () => {
       file,
     });
   }, []);
- 
 
   const addPhotos: AddPhotosProps = (event) => {
     event.preventDefault();
-     if (name || !age || !weight) {
+    if (name || !age || !weight) {
       setError(true);
     } else {
       setError(false);
@@ -178,7 +177,7 @@ const AddPhotos = () => {
           style={{
             backgroundImage: `url("${picture?.preview && picture?.preview}")`,
           }}
-          className="rounded-md bg-cover bg-center w-[45%] h-[98%]"
+          className="animeLeft rounded-md bg-cover bg-center w-[45%] h-[98%]"
         ></div>
       </form>
     </section>

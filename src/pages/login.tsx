@@ -20,7 +20,7 @@ const Login = () => {
   });
 
   const {
-    global: { page, setLogin, currentUser, regex, error, setError },
+    global: { page, setLogin, currentUser, regexEmail, error, setError },
   } = useGlobalContext();
   const { response, loading, setLoading } = useFetch(
     `/users?email=${form.email}&password=${form.password}`
@@ -41,7 +41,7 @@ const Login = () => {
 
   const errorPassword = validateInput(form.password);
   const errorUsername = validateInput(form.email);
-  const emailInvalid = emailValidate(form.email, regex);
+  const emailInvalid = emailValidate(form.email, regexEmail);
 
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
@@ -91,7 +91,7 @@ const Login = () => {
         width={500}
         height={300}
         alt="picture for login"
-        className="w-full"
+        className="w-full animeLeft"
       />
 
       <form

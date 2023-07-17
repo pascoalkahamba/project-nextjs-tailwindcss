@@ -4,7 +4,7 @@ import useMounted from "../hooks/useMounted";
 
 interface ContextProps {
   page: string;
-  regex: RegExp;
+  regexEmail: RegExp;
   currentUser: string;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   error: boolean;
@@ -41,7 +41,7 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
   const [login, setLogin] = useState(false);
 
   const mounted = useMounted();
-  const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+  const REGEX_EMAIL = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
   if (!mounted) return <div></div>;
   return (
@@ -56,7 +56,7 @@ export const GlobalStorage = ({ children }: GlobalStorageProps) => {
         setLogin: setLogin,
         setError: setError,
         page: "Página",
-        regex: regex,
+        regexEmail: REGEX_EMAIL,
         currentUser: currentUser,
         setCurrentUser: setCurrentUser,
       }}

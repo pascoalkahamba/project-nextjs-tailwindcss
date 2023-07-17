@@ -16,8 +16,8 @@ export function validateInput(username: string) {
   return username === "" || (!Number.isNaN(+username) && true);
 }
 
-export function emailValidate(email: string, regex: RegExp) {
-  return regex.test(email);
+export function emailValidate(email: string, regexEmail: RegExp) {
+  return regexEmail.test(email);
 }
 
 const CreateAccount = () => {
@@ -28,7 +28,7 @@ const CreateAccount = () => {
     email: "",
   });
   const {
-    global: { regex, page, error, setError },
+    global: { regexEmail, page, error, setError },
   } = useGlobalContext();
 
   const { response, loading } = useFetch(`/users?email=${form.email}`);
@@ -46,7 +46,7 @@ const CreateAccount = () => {
   const errorEmail = validateInput(form.email);
   const errorPassword = validateInput(form.password);
   const errorPassword2 = validateInput(form.password2);
-  const emailRegex = emailValidate(form.email, regex);
+  const emailRegex = emailValidate(form.email, regexEmail);
 
   const funHandleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
@@ -85,7 +85,7 @@ const CreateAccount = () => {
         width={500}
         height={300}
         alt="picture for login"
-        className="w-[97%]"
+        className="w-[97%] animeLeft"
       />
 
       <form
