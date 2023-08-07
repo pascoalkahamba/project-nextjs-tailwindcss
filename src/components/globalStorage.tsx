@@ -1,5 +1,4 @@
 import React, { ReactNode, createContext, useState } from "react";
-import usePersistedStorage from "../hooks/usePersistedStorage";
 import useMounted from "../hooks/useMounted";
 
 interface ContextProps {
@@ -27,7 +26,6 @@ interface InfoDogsProps {
   weight: number;
   age: number;
 }
-
 interface GlobalStorageProps {
   children: ReactNode;
 }

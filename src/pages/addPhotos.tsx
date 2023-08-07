@@ -1,4 +1,9 @@
-import React, { useCallback, useState } from "react";
+import React, {
+  Suspense,
+  useCallback,
+  useDeferredValue,
+  useState,
+} from "react";
 import Head from "next/head";
 import Link from "next/link";
 import useGlobalContext from "../hooks/useGlobalContext";
@@ -9,8 +14,8 @@ import { useRouter } from "next/router";
 import { api } from "../config/axios";
 import { PictureProps } from "../model/User";
 
-type AddPhotosProps = React.FormEventHandler<HTMLFormElement> | undefined;
-type HandlePictureChangeProps =
+type OnAddPhotosProps = React.FormEventHandler<HTMLFormElement> | undefined;
+type OnPictureChangeProps =
   | React.ChangeEventHandler<HTMLInputElement>
   | undefined;
 
@@ -26,6 +31,8 @@ const AddPhotos = () => {
   } = useGlobalContext();
 
   const REGEX_NUMBER = /^\d+$/;
+  const deburreg = useDeferredValue(form);
+  console.log(deburreg);
 
   const handleChange: HandleChangeProps = ({ target }) => {
     setForm({ ...form, [target.id]: target.value });
@@ -40,7 +47,7 @@ const AddPhotos = () => {
   const weight = isNumber(form.weight, REGEX_NUMBER);
   const router = useRouter();
 
-  const handlePictureChange: HandlePictureChangeProps = ({ target }) => {
+  const onPictureChange: OnPictureChangeProps = ({ target }) => {
     const file: File = (target.files && target.files[0]) as File;
 
     if (file) {
@@ -60,7 +67,7 @@ const AddPhotos = () => {
     });
   }, []);
 
-  const addPhotos: AddPhotosProps = (event) => {
+  const onAddPhotos: OnAddPhotosProps = (event) => {
     event.preventDefault();
     if (name || !age || !weight) {
       setError(true);
@@ -103,7 +110,7 @@ const AddPhotos = () => {
 
       <form
         className="flex justify-evenly w-full items-center mb-3"
-        onSubmit={addPhotos}
+        onSubmit={onAddPhotos}
       >
         <div className="flex flex-col gap-2">
           <div>
@@ -162,7 +169,7 @@ const AddPhotos = () => {
             <input
               type="file"
               className="cursor-pointer"
-              onChange={handlePictureChange}
+              onChange={onPictureChange}
             />
           </div>
           <button

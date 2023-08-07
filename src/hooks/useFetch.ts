@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useDebugValue } from "react";
 import { api } from "../config/axios";
 import useGlobalContext from "./useGlobalContext";
 
@@ -18,7 +18,7 @@ export function useFetch(url: string) {
     "email nao cadastrado"
   );
 
-  const {
+   const {
     global: { setCurrentUser },
   } = useGlobalContext();
 
